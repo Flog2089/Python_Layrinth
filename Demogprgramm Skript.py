@@ -4,6 +4,8 @@ from sys import exit
 from random import randint
 
 CELLSIZE = 40 # Wähle zwischen: 10, 20, 40, 50
+game_loop = False
+makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
 
 # Zeichnet das Grundgitter:
 def drawGrid():
@@ -63,13 +65,70 @@ def doStep():
 
 ### MAIN ###
 #makeTurtle()
-makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
-drawGrid()
-# An dieser Stelle könntest du ein Feld als Ziel färben.
-# Die Turtle auf ein Anfangsfeld setzen:
-setPos(-400 + 5*CELLSIZE // 2, -300 + 5*CELLSIZE // 2)
-penUp()
 
-repeat 1000:
-    doStep()
-    sleep(0.5)        
+setPlaygroundSize(800, 800)
+
+def start_screen():
+    hideTurtle()
+
+    setPenColor("black")
+    penUp()
+    setPos(0, 330)
+    clean("#777777")
+  
+    
+
+    label("Greetings, esteemed player!", adjust = "c")
+    back(30)
+    label("To ensure a smooth and delightful experience,", adjust = "c")
+    back(30)
+    label("kindly navigate to Form ICA34b,", adjust = "c")
+    back(30)
+    label("\"New Player Acceptance and Biscuit Preference Survey.\"", adjust = "c")
+    back(30)
+    label("Two notarized copies are required.", adjust = "c") 
+    back(30)
+    label("Upon successful completion,", adjust = "c") 
+    back(30)
+    label("a designated Game Official will be dispatched", adjust = "c") 
+    back(30)
+    label("to verify your left-handed dominance (a technical requirement).", adjust = "c") 
+    back(30)
+    label("We value your patience and enthusiasm!", adjust = "c") 
+    back(30)
+    
+    
+    setPos(0, -100)   
+    setPenColor("dark grey") 
+    label("Select difficulty:", adjust = "c")
+    
+    setPos(-200, -200)   
+    setPenColor("green") 
+    label("Easy", adjust = "c")
+    
+    setPos(0, -200)   
+    setPenColor("yellow") 
+    label("Medium", adjust = "c")
+    
+    setPos(200, -200)   
+    setPenColor("red") 
+    label("Hard", adjust = "c")
+    
+    
+    difficulty = getKeyWait()
+    if difficulty in ["1", "2", "3"]:
+        print(difficulty)
+
+
+start_screen()
+    
+while game_loop:
+    showTurtle()
+    drawGrid()
+    # An dieser Stelle könntest du ein Feld als Ziel färben.
+    # Die Turtle auf ein Anfangsfeld setzen:
+    setPos(-400 + 5*CELLSIZE // 2, -300 + 5*CELLSIZE // 2)
+    penUp()
+    while True:
+        doStep()
+        sleep(0.5)        
