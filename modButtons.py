@@ -38,7 +38,6 @@ class Button(object):
     
     @classmethod
     def handle_click(cls, x, y):
-        print("test")
         for button in cls.buttons:
             if button.posX - button.width / 2 < x < button.posX + button.width / 2 and button.posY > y > button.posY - button.height:
                 button.click_action()
