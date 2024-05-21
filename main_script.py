@@ -124,7 +124,7 @@ def start_screen():
     setPos(-200, -200)   
     setPenColor("green") 
     label("Easy", adjust = "c")
-    easy_button = difficultyButton(-200, -200, 100, 200, "green", "Easy", 1)
+    easy_button = Button(-200, -200, 200, 100, "green", "Easy")
     easy_button.make()
     
     setPos(0, -200)   
