@@ -75,11 +75,11 @@ setPlaygroundSize(800, 800)
 
 class difficultyButton(Button):
     def __init__(self, posX, posY, width, height, color, text, difficulty):
-        super(Button, self).__init__()
         self.difficulty = difficulty
-        self.gurke = makeTurtle()
+        super(difficultyButton, self).__init__(posX, posY, width, height, color, text)
         
-    def click_action():
+        
+    def click_action(self):
         global difficulty
         global game_loop
         difficulty = self.difficulty
@@ -124,7 +124,7 @@ def start_screen():
     setPos(-200, -200)   
     setPenColor("green") 
     label("Easy", adjust = "c")
-    easy_button = Button(-200, -200, 200, 100, "green", "Easy")
+    easy_button = difficultyButton(-200, -200, 200, 100, "green", "Easy", 1)
     easy_button.make()
     
     setPos(0, -200)   
@@ -135,14 +135,7 @@ def start_screen():
     setPenColor("red") 
     label("Hard", adjust = "c")
     
-    
 
-
-
-
-    
-       
-        
         
     
 
@@ -151,6 +144,7 @@ while not game_loop:
     pass
 
 while game_loop:
+    clear()
     showTurtle()
     drawGrid()
     # An dieser Stelle könntest du ein Feld als Ziel färben.
