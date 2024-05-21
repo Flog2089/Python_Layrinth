@@ -84,6 +84,7 @@ class difficultyButton(Button):
         global game_loop
         difficulty = self.difficulty
         game_loop = True
+        print(self.difficulty)
         
 
 def start_screen():
@@ -121,21 +122,19 @@ def start_screen():
     label("Select difficulty:", adjust = "c")
     
     
-    setPos(-200, -200)   
-    setPenColor("green") 
-    label("Easy", adjust = "c")
-    easy_button = difficultyButton(-200, -200, 200, 100, "green", "Easy", 1)
+    
+    easy_button = difficultyButton(-250, -200, 200, 100, "green", "Easy", 1)
     easy_button.make()
     
-    setPos(0, -200)   
-    setPenColor("yellow") 
-    label("Medium", adjust = "c")
+    medium_button = difficultyButton(0, -200, 200, 100, "yellow", "Medium", 2)
+    medium_button.make()
     
-    setPos(200, -200)   
-    setPenColor("red") 
-    label("Hard", adjust = "c")
+    hard_button = difficultyButton(250, -200, 200, 100, "red", "Hard", 3)
+    hard_button.make()
     
-
+@onMouseHit
+def onClick(x, y):
+    Button.handle_click(x, y)
         
     
 

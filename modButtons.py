@@ -1,5 +1,6 @@
 from gturtle import *
 class Button(object):
+    buttons = []
     def __init__(self, posX, posY, width, height, color, text):
         self.posX = posX
         self.posY = posY
@@ -13,7 +14,7 @@ class Button(object):
         setPenColor("black")
         setFillColor(self.color)
         
-        self.bind_on_click()
+        self.buttons.append(self)
         
         
     def make(self):
@@ -35,17 +36,18 @@ class Button(object):
         label(self.text, adjust = "c")
         
     
-    def bind_on_click(self):
-        # Define the method that will be decorated and bound
-        @onMouseHit
-        def onClick(x, y):
-            if self.posX - self.width / 2 < x < self.posX + self.width / 2 and self.posY > y > self.posY - self.height:
-                self.click_action()
-            else:
-                pass
-        
-        # Assign the decorated method to an instance variable
-        self.onClick = onClick
+    @classmethod
+    def handle_click(cls, x, y):
+        print("test")
+        for button in cls.buttons:
+            if button.posX - button.width / 2 < x < button.posX + button.width / 2 and button.posY > y > button.posY - button.height:
+                button.click_action()
         
     def click_action(self):
         print("hit")
+        
+        
+# Bind the click handler to mouse events
+@onMouseHit
+def onClick(x, y):
+    Button.handle_click(x, y)
