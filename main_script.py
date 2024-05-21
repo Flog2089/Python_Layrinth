@@ -8,11 +8,13 @@ CELLSIZE = 40 # Wähle zwischen: 10, 20, 40, 50
 game_loop = False
 difficulty = 0
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
+setPlaygroundSize(800, 800)
 
 # Zeichnet das Grundgitter:
 def drawGrid():
     global CELLSIZE
     hideTurtle()
+    pd()
     setPenColor("gray")
     x = -400
     repeat (800 // CELLSIZE) + 1:
@@ -24,7 +26,7 @@ def drawGrid():
         setPos(-400, y)
         moveTo(+400, y)
         y += CELLSIZE
-    setPos(1,1)
+    setPos(10,10)
     setFillColor("red")
     fill()
     setPos(0, 0)
@@ -33,23 +35,26 @@ def drawGrid():
 #Bei Mausklick eine Zelle schwarz färben.
 @onMouseHit
 def onClick(x, y):
-    # Die Position der Turtle speichern
-    turtle_x = getX()
-    turtle_y = getY()
-    if game_loop:
-        # Zelle schwarz färben
-        hideTurtle()
-        setPos(x, y)
-        if getPixelColorStr() == "white":
-            setFillColor("black")
-            fill()
-        elif getPixelColorStr() == "black":
-            setFillColor("white")
-            fill()
-        # Die Turtle wieder dahin zurücksetzen,
-        # wo sie am Anfang war.
-        setPos(turtle_x, turtle_y)
-        showTurtle()
+    if not game_loop:
+        difficultyButton.handle_click(x, y)
+    else:
+        # Die Position der Turtle speichern
+        turtle_x = getX()
+        turtle_y = getY()
+        if game_loop:
+            # Zelle schwarz färben
+            hideTurtle()
+            setPos(x, y)
+            if getPixelColorStr() == "white":
+                setFillColor("black")
+                fill()
+            elif getPixelColorStr() == "black":
+                setFillColor("white")
+                fill()
+            # Die Turtle wieder dahin zurücksetzen,
+            # wo sie am Anfang war.
+            setPos(turtle_x, turtle_y)
+            showTurtle()
 
 def doStep():
     hideTurtle()
@@ -69,7 +74,6 @@ def doStep():
 ### MAIN ###
 #makeTurtle()
 
-setPlaygroundSize(800, 800)
 
 
 
@@ -132,9 +136,6 @@ def start_screen():
     hard_button = difficultyButton(250, -200, 200, 100, "red", "Hard", 3)
     hard_button.make()
     
-@onMouseHit
-def onClick(x, y):
-    Button.handle_click(x, y)
         
     
 
