@@ -145,4 +145,4 @@ while game_loop:
     penUp()
     while True:
         doStep()
-        sleep(0.5)     
+        sleep(0.7 - 0.2 * difficulty)     
