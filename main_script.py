@@ -31,6 +31,7 @@ class difficultyButton(Button):
 # Zeichnet das Grundgitter:
 def drawGrid():
     global CELLSIZE
+    CELLSIZE = 50 - 5 * difficulty
     hideTurtle()
     pd()
     setPenColor("gray")
@@ -74,20 +75,24 @@ def onClick(x, y):
             showTurtle()
 
 def doStep():
+    global game_loop
     hideTurtle()
     # Einen Schritt nach vorne machen.
     forward(CELLSIZE)
     # Falls die Turtle auf einem schwarzen Feld landet,
     # setzen wir sie wieder zurück und drehen sie dafür.
-    if getPixelColorStr() == "black":
-        back(CELLSIZE)
-        right(90)
-    elif getPixelColorStr() == "red" :
-        print("Du hast gewonnen!!!")
+    try:
+        if getPixelColorStr() == "black":
+            back(CELLSIZE)
+            right(90)
+        elif getPixelColorStr() == "red" :
+            print("Du hast gewonnen!!!")
+            showTurtle()
+            exit()
         showTurtle()
-        exit()
-    showTurtle()
-        
+    except:
+        print("you failed")
+        game_loop = False
 
 def start_screen():
     hideTurtle()
@@ -135,7 +140,7 @@ start_screen()
 while not game_loop:
     pass
 
-while game_loop:
+if game_loop:
     clear()
     showTurtle()
     drawGrid()
@@ -143,6 +148,6 @@ while game_loop:
     # Die Turtle auf ein Anfangsfeld setzen:
     setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
     penUp()
-    while True:
+    while game_loop:
         doStep()
         sleep(0.7 - 0.2 * difficulty)     
