@@ -4,28 +4,45 @@ from sys import exit
 from random import randint
 from modButtons import Button
 
+PLAYGROUND_HEIGHT = 1000
+PLAYGROUND_WIDTH = 1400
 CELLSIZE = 40 # Wähle zwischen: 10, 20, 40, 50
 game_loop = False
 difficulty = 0
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
-setPlaygroundSize(800, 800)
 
+setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
+
+
+class difficultyButton(Button):
+    def __init__(self, posX, posY, width, height, color, text, difficulty):
+        self.difficulty = difficulty
+        super(difficultyButton, self).__init__(posX, posY, width, height, color, text)
+        
+        
+    def click_action(self):
+        global difficulty
+        global game_loop
+        difficulty = self.difficulty
+        game_loop = True
+        print(self.difficulty)
+        
+        
 # Zeichnet das Grundgitter:
 def drawGrid():
     global CELLSIZE
     hideTurtle()
     pd()
     setPenColor("gray")
-    x = -400
-    repeat (800 // CELLSIZE) + 1:
-        setPos(x, -300)
-        moveTo(x, +300)
-        x += CELLSIZE
-    y = -300
-    repeat (600 // CELLSIZE) + 1:
-        setPos(-400, y)
-        moveTo(+400, y)
-        y += CELLSIZE
+    x = -PLAYGROUND_WIDTH / 2
+    for i in range(PLAYGROUND_WIDTH // CELLSIZE + 1):
+        setPos(x + i * CELLSIZE, -PLAYGROUND_HEIGHT / 2)
+        moveTo(x + i * CELLSIZE, +PLAYGROUND_HEIGHT / 2)
+    y = -PLAYGROUND_HEIGHT / 2
+    for i in range(PLAYGROUND_HEIGHT // CELLSIZE + 1):
+        setPos(-PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
+        moveTo(+PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
+        
     setPos(10,10)
     setFillColor("red")
     fill()
@@ -70,25 +87,6 @@ def doStep():
         showTurtle()
         exit()
     showTurtle()
-
-### MAIN ###
-#makeTurtle()
-
-
-
-
-class difficultyButton(Button):
-    def __init__(self, posX, posY, width, height, color, text, difficulty):
-        self.difficulty = difficulty
-        super(difficultyButton, self).__init__(posX, posY, width, height, color, text)
-        
-        
-    def click_action(self):
-        global difficulty
-        global game_loop
-        difficulty = self.difficulty
-        game_loop = True
-        print(self.difficulty)
         
 
 def start_screen():
@@ -99,8 +97,6 @@ def start_screen():
     setPos(0, 330)
     clean("#777777")
   
-    
-
     label("Greetings, esteemed player!", adjust = "c")
     back(30)
     label("To ensure a smooth and delightful experience,", adjust = "c")
@@ -118,14 +114,11 @@ def start_screen():
     label("to verify your left-handed dominance (a technical requirement).", adjust = "c") 
     back(30)
     label("We value your patience and enthusiasm!", adjust = "c") 
-    back(30)
-    
+    back(30)    
     
     setPos(0, -100)   
     setPenColor("dark grey") 
-    label("Select difficulty:", adjust = "c")
-    
-    
+    label("Select difficulty:", adjust = "c")    
     
     easy_button = difficultyButton(-250, -200, 200, 100, "green", "Easy", 1)
     easy_button.make()
@@ -137,7 +130,6 @@ def start_screen():
     hard_button.make()
     
         
-    
 
 start_screen()
 while not game_loop:
@@ -149,7 +141,7 @@ while game_loop:
     drawGrid()
     # An dieser Stelle könntest du ein Feld als Ziel färben.
     # Die Turtle auf ein Anfangsfeld setzen:
-    setPos(-400 + 5*CELLSIZE // 2, -300 + 5*CELLSIZE // 2)
+    setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
     penUp()
     while True:
         doStep()
