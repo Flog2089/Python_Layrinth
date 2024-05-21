@@ -2,9 +2,11 @@ from gturtle import *
 from time import sleep
 from sys import exit
 from random import randint
+from modButtons import Button
 
 CELLSIZE = 40 # Wähle zwischen: 10, 20, 40, 50
 game_loop = False
+difficulty = 0
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
 
 # Zeichnet das Grundgitter:
@@ -34,19 +36,20 @@ def onClick(x, y):
     # Die Position der Turtle speichern
     turtle_x = getX()
     turtle_y = getY()
-    # Zelle schwarz färben
-    hideTurtle()
-    setPos(x, y)
-    if getPixelColorStr() == "white":
-        setFillColor("black")
-        fill()
-    elif getPixelColorStr() == "black":
-        setFillColor("white")
-        fill()
-    # Die Turtle wieder dahin zurücksetzen,
-    # wo sie am Anfang war.
-    setPos(turtle_x, turtle_y)
-    showTurtle()
+    if game_loop:
+        # Zelle schwarz färben
+        hideTurtle()
+        setPos(x, y)
+        if getPixelColorStr() == "white":
+            setFillColor("black")
+            fill()
+        elif getPixelColorStr() == "black":
+            setFillColor("white")
+            fill()
+        # Die Turtle wieder dahin zurücksetzen,
+        # wo sie am Anfang war.
+        setPos(turtle_x, turtle_y)
+        showTurtle()
 
 def doStep():
     hideTurtle()
@@ -67,6 +70,21 @@ def doStep():
 #makeTurtle()
 
 setPlaygroundSize(800, 800)
+
+
+
+class difficultyButton(Button):
+    def __init__(self, posX, posY, width, height, color, text, difficulty):
+        super(Button, self).__init__()
+        self.difficulty = difficulty
+        self.gurke = makeTurtle()
+        
+    def click_action():
+        global difficulty
+        global game_loop
+        difficulty = self.difficulty
+        game_loop = True
+        
 
 def start_screen():
     hideTurtle()
@@ -102,9 +120,12 @@ def start_screen():
     setPenColor("dark grey") 
     label("Select difficulty:", adjust = "c")
     
+    
     setPos(-200, -200)   
     setPenColor("green") 
     label("Easy", adjust = "c")
+    easy_button = difficultyButton(-200, -200, 100, 200, "green", "Easy", 1)
+    easy_button.make()
     
     setPos(0, -200)   
     setPenColor("yellow") 
@@ -115,13 +136,20 @@ def start_screen():
     label("Hard", adjust = "c")
     
     
-    difficulty = getKeyWait()
-    if difficulty in ["1", "2", "3"]:
-        print(difficulty)
 
+
+
+
+    
+       
+        
+        
+    
 
 start_screen()
-    
+while not game_loop:
+    pass
+
 while game_loop:
     showTurtle()
     drawGrid()
@@ -131,4 +159,4 @@ while game_loop:
     penUp()
     while True:
         doStep()
-        sleep(0.5)        
+        sleep(0.5)     

@@ -1,7 +1,5 @@
 from gturtle import *
-
-makeTurtle()
-class Button:
+class Button(object):
     def __init__(self, posX, posY, width, height, color, text):
         self.posX = posX
         self.posY = posY
@@ -9,31 +7,31 @@ class Button:
         self.height = height
         self.text = text
         self.color = makeColor(color)
-        self.gurke = makeTurtle()
         
-        self.gurke.hideTurtle()
-        self.gurke.setPenWidth(3)
-        self.gurke.setPenColor("black")
-        self.gurke.setFillColor(self.color)
+        hideTurtle()
+        setPenWidth(3)
+        setPenColor("black")
+        setFillColor(self.color)
         
         self.bind_on_click()
         
         
     def make(self):
-        self.gurke.setPos(self.posX, self.posY)
-        self.gurke.moveTo(self.posX - self.width / 2, self.posY)
-        self.gurke.lt(90)
-        self.gurke.fd(self.height)
-        self.gurke.lt(90)
-        self.gurke.fd(self.width)
-        self.gurke.lt(90)
-        self.gurke.fd(self.height)
-        self.gurke.lt(90)
-        self.gurke.fd(self.width / 2)
-        self.gurke.rt(90)
-        self.gurke.pu()
-        self.gurke.bk(self.height / 2)
-        self.gurke.fill()
+        pd()
+        setPos(self.posX, self.posY)
+        moveTo(self.posX - self.width / 2, self.posY)
+        lt(90)
+        fd(self.height)
+        lt(90)
+        fd(self.width)
+        lt(90)
+        fd(self.height)
+        lt(90)
+        fd(self.width / 2)
+        rt(90)
+        pu()
+        bk(self.height / 2)
+        fill()
         label(self.text, adjust = "c")
         
     
@@ -50,5 +48,4 @@ class Button:
         self.onClick = onClick
         
     def click_action(self):
-        pass
-           
+        print("hit")
