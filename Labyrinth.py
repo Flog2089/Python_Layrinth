@@ -101,7 +101,7 @@ repeat 1000:
             drawImage("u:/Eigene Dateien/sprite_d_3.png")
             player_sprite = 1
 
-				if player_sprite_direction == 3 :
+				elif player_sprite_direction == 3 :
         
         if player_sprite == 1 :
             drawImage("u:/Eigene Dateien/sprite_l_1.png")
