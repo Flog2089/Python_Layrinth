@@ -100,6 +100,36 @@ repeat 1000:
         elif player_sprite == 4: 
             drawImage("u:/Eigene Dateien/sprite_d_3.png")
             player_sprite = 1
+
+				if player_sprite_direction == 3 :
+        
+        if player_sprite == 1 :
+            drawImage("u:/Eigene Dateien/sprite_l_1.png")
+            player_sprite = 2
+        elif player_sprite == 2: 
+            drawImage("u:/Eigene Dateien/sprite_l_2.png")
+            player_sprite = 3
+        elif player_sprite == 3: 
+            drawImage("u:/Eigene Dateien/sprite_l_1.png")
+            player_sprite = 4
+        elif player_sprite == 4: 
+            drawImage("u:/Eigene Dateien/sprite_l_3.png")
+            player_sprite = 1
+            
+    elif player_sprite_direction == 4 :
+        
+        if player_sprite == 1 :
+            drawImage("u:/Eigene Dateien/sprite_u_1.png")
+            player_sprite = 2
+        elif player_sprite == 2: 
+            drawImage("u:/Eigene Dateien/sprite_u_2.png")
+            player_sprite = 3
+        elif player_sprite == 3: 
+            drawImage("u:/Eigene Dateien/sprite_u_1.png")
+            player_sprite = 4
+        elif player_sprite == 4: 
+            drawImage("u:/Eigene Dateien/sprite_u_3.png")
+            player_sprite = 1
     sleep(0.5)
     drawImage("u:/Eigene Dateien/White.png")
     
