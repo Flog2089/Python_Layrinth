@@ -1,25 +1,31 @@
+#import von wichtigen libraries
 from gturtle import *
 from time import sleep
 from sys import exit
 from random import randint
 from modButtons import Button
 
+#definition von variablen
 PLAYGROUND_HEIGHT = 1000
-PLAYGROUND_WIDTH = 1400
-CELLSIZE = 40 # Wähle zwischen: 10, 20, 40, 50
+PLAYGROUND_WIDTH = 1000
+CELLSIZE = 40 
 game_loop = False
 difficulty = 0
+#turtle wird mit dem angegebenen bild erschaffen
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
 
+#setzt die größe des turtle fensters auf die oben definierten variablen
 setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
 
 
+#class difficultyButton() mit class Button als parent
 class difficultyButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
     def __init__(self, posX, posY, width, height, color, text, difficulty):
         self.difficulty = difficulty
         super(difficultyButton, self).__init__(posX, posY, width, height, color, text)
         
-        
+    #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
     def click_action(self):
         global difficulty
         global game_loop
@@ -31,7 +37,7 @@ class difficultyButton(Button):
 # Zeichnet das Grundgitter:
 def drawGrid():
     global CELLSIZE
-    CELLSIZE = 50 - 5 * difficulty
+    CELLSIZE = PLAYGROUND_HEIGHT / (15 + 5 * difficulty)
     hideTurtle()
     pd()
     setPenColor("gray")
@@ -49,8 +55,29 @@ def drawGrid():
     fill()
     setPos(0, 0)
     showTurtle()
-
-#Bei Mausklick eine Zelle schwarz färben.
+    
+def draw_border():
+    ht()
+    lt(90)
+    pu()
+    setFillColor("blue")
+    setPos(CELLSIZE / 2, CELLSIZE / 2)
+    fd(PLAYGROUND_HEIGHT / 2 - 1 * CELLSIZE)
+    rt(90)
+    fd(PLAYGROUND_WIDTH / 2 - 1 * CELLSIZE)
+    for i in range(2):
+        rt(90)
+        for j in range((15 + 5 * difficulty) -1):
+            fd(CELLSIZE)
+            fill()
+            print(j, getPos())
+        rt(90)
+        for j in range((15 + 5 * difficulty) -1):
+            fd(CELLSIZE)
+            fill()
+            print(j, getPos())
+    st()
+#Bei Mausklick eine Zelle schwarz färben / auf dem Startbilschirm click an button weitergeben
 @onMouseHit
 def onClick(x, y):
     if not game_loop:
@@ -77,31 +104,36 @@ def onClick(x, y):
 def doStep():
     global game_loop
     hideTurtle()
+#    print(-PLAYGROUND_WIDTH / 2 , getX() , PLAYGROUND_WIDTH / 2)
     # Einen Schritt nach vorne machen.
-    forward(CELLSIZE)
+    fd(CELLSIZE)
+        
     # Falls die Turtle auf einem schwarzen Feld landet,
     # setzen wir sie wieder zurück und drehen sie dafür.
-    try:
-        if getPixelColorStr() == "black":
-            back(CELLSIZE)
-            right(90)
-        elif getPixelColorStr() == "red" :
-            print("Du hast gewonnen!!!")
-            showTurtle()
-            exit()
+    if getPixelColorStr() == "black":
+        back(CELLSIZE)
+        right(90)
+    elif getPixelColorStr() == "blue":
+        back(CELLSIZE)
+        rt(180)
+    elif getPixelColorStr() == "red" :
+        print("Du hast gewonnen!!!")
         showTurtle()
-    except:
-        print("you failed")
         game_loop = False
+        exit()
+    showTurtle()
 
+#definition startbildschirm
 def start_screen():
     hideTurtle()
 
+    #füllt alles mit einem angenehmen 777777 grau aus
     setPenColor("black")
     penUp()
     setPos(0, 330)
     clean("#777777")
-  
+    
+    #code für platzhalter text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
     label("Greetings, esteemed player!", adjust = "c")
     back(30)
     label("To ensure a smooth and delightful experience,", adjust = "c")
@@ -121,6 +153,7 @@ def start_screen():
     label("We value your patience and enthusiasm!", adjust = "c") 
     back(30)    
     
+    #macht drei knöpfe (s.o.)
     setPos(0, -100)   
     setPenColor("dark grey") 
     label("Select difficulty:", adjust = "c")    
@@ -144,10 +177,12 @@ if game_loop:
     clear()
     showTurtle()
     drawGrid()
+    draw_border()
     # An dieser Stelle könntest du ein Feld als Ziel färben.
     # Die Turtle auf ein Anfangsfeld setzen:
     setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
     penUp()
+    showTurtle()
     while game_loop:
         doStep()
         sleep(0.7 - 0.2 * difficulty)     
