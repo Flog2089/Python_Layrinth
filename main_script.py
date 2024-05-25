@@ -10,6 +10,8 @@ print(wd)
 print("{}/sprites/Sprite_d_1.png".format(wd))
 
 
+player_Sprite_direction = 1
+player_Sprite = 1
 CELLSIZE = 40 # Wähle zwischen: 10, 20, 40, 50
 
 # Zeichnet das Grundgitter:
@@ -50,25 +52,12 @@ def onClick(x, y):
     setPos(turtle_x, turtle_y)
 
 def doStep():
+    global player_Sprite_direction 
+    global player_Sprite
     # Einen Schritt nach vorne machen.
     forward(CELLSIZE)
     # Falls die Turtle auf einem schwarzen Feld landet,
     # setzen wir sie wieder zurück und drehen sie dafür.
-
-### MAIN ###
-
-#makeTurtle()
-player_Sprite_direction = 1
-player_Sprite = 1
-makeTurtle()
-hideTurtle()
-drawGrid()
-# An dieser Stelle könntest du ein Feld als Ziel färben.
-# Die Turtle auf ein Anfangsfeld setzen:
-setPos(-400 + 5*CELLSIZE // 2 , -300 + 5*CELLSIZE // 2 -1)
-penUp()
-repeat 1000:
-    doStep()
     print("step")
     if getPixelColorStr() == "red" :
         print("Du hast gewonnen!!!")
@@ -140,6 +129,21 @@ repeat 1000:
             player_Sprite = 1
     sleep(0.5)
     drawImage("{}/sprites/white.png".format(wd))
+
+### MAIN ###
+
+#makeTurtle()
+
+makeTurtle()
+hideTurtle()
+drawGrid()
+# An dieser Stelle könntest du ein Feld als Ziel färben.
+# Die Turtle auf ein Anfangsfeld setzen:
+setPos(-400 + 5*CELLSIZE // 2 , -300 + 5*CELLSIZE // 2 -1)
+penUp()
+repeat 1000:
+    doStep()
+    
     
     
            
