@@ -2,6 +2,13 @@ from gturtle import *
 from time import sleep
 from sys import exit
 from random import randint
+import os
+
+# Print the current working directory
+wd = os.getcwd().replace("\\", "/")
+print(wd)
+print("{}/sprites/Sprite_d_1.png".format(wd))
+
 
 CELLSIZE = 40 # Wähle zwischen: 10, 20, 40, 50
 
@@ -51,8 +58,8 @@ def doStep():
 ### MAIN ###
 
 #makeTurtle()
-player_sprite_direction = 1
-player_sprite = 1
+player_Sprite_direction = 1
+player_Sprite = 1
 makeTurtle()
 hideTurtle()
 drawGrid()
@@ -62,76 +69,77 @@ setPos(-400 + 5*CELLSIZE // 2 , -300 + 5*CELLSIZE // 2 -1)
 penUp()
 repeat 1000:
     doStep()
+    print("step")
     if getPixelColorStr() == "red" :
         print("Du hast gewonnen!!!")
         exit()
     elif getPixelColorStr() != "white":
         back(CELLSIZE)
         right(90)
-        player_sprite_direction += 1
-        if player_sprite_direction > 4 :
-            player_sprite_direction = 1
-    if player_sprite_direction == 1 :
+        player_Sprite_direction += 1
+        if player_Sprite_direction > 4 :
+            player_Sprite_direction = 1
+    if player_Sprite_direction == 1 :
         
-        if player_sprite == 1 :
-            drawImage("u:/Eigene Dateien/sprite_r_1.png")
-            player_sprite = 2
-        elif player_sprite == 2: 
-            drawImage("u:/Eigene Dateien/sprite_r_2.png")
-            player_sprite = 3
-        elif player_sprite == 3: 
-            drawImage("u:/Eigene Dateien/sprite_r_1.png")
-            player_sprite = 4
-        elif player_sprite == 4: 
-            drawImage("u:/Eigene Dateien/sprite_r_3.png")
-            player_sprite = 1
+        if player_Sprite == 1 :
+            drawImage("{}/sprites/Sprite_r_1.png".format(wd))
+            player_Sprite = 2
+        elif player_Sprite == 2: 
+            drawImage("{}/sprites/Sprite_r_2.png".format(wd))
+            player_Sprite = 3
+        elif player_Sprite == 3: 
+            drawImage("{}/sprites/Sprite_r_1.png".format(wd))
+            player_Sprite = 4
+        elif player_Sprite == 4: 
+            drawImage("{}/sprites/Sprite_r_3.png".format(wd))
+            player_Sprite = 1
             
-    elif player_sprite_direction == 2 :
+    elif player_Sprite_direction == 2 :
         
-        if player_sprite == 1 :
-            drawImage("u:/Eigene Dateien/sprite_d_1.png")
-            player_sprite = 2
-        elif player_sprite == 2: 
-            drawImage("u:/Eigene Dateien/sprite_d_2.png")
-            player_sprite = 3
-        elif player_sprite == 3: 
-            drawImage("u:/Eigene Dateien/sprite_d_1.png")
-            player_sprite = 4
-        elif player_sprite == 4: 
-            drawImage("u:/Eigene Dateien/sprite_d_3.png")
-            player_sprite = 1
+        if player_Sprite == 1 :
+            drawImage("{}/sprites/Sprite_d_1.png".format(wd))
+            player_Sprite = 2
+        elif player_Sprite == 2: 
+            drawImage("{}/sprites/Sprite_d_2.png".format(wd))
+            player_Sprite = 3
+        elif player_Sprite == 3: 
+            drawImage("{}/sprites/Sprite_d_1.png".format(wd))
+            player_Sprite = 4
+        elif player_Sprite == 4: 
+            drawImage("{}/sprites/Sprite_d_3.png".format(wd))
+            player_Sprite = 1
 
-				elif player_sprite_direction == 3 :
+    elif player_Sprite_direction == 3 :
         
-        if player_sprite == 1 :
-            drawImage("u:/Eigene Dateien/sprite_l_1.png")
-            player_sprite = 2
-        elif player_sprite == 2: 
-            drawImage("u:/Eigene Dateien/sprite_l_2.png")
-            player_sprite = 3
-        elif player_sprite == 3: 
-            drawImage("u:/Eigene Dateien/sprite_l_1.png")
-            player_sprite = 4
-        elif player_sprite == 4: 
-            drawImage("u:/Eigene Dateien/sprite_l_3.png")
-            player_sprite = 1
+        if player_Sprite == 1 :
+            drawImage("{}/sprites/Sprite_l_1.png".format(wd))
+            player_Sprite = 2
+        elif player_Sprite == 2: 
+            drawImage("{}/sprites/Sprite_l_2.png".format(wd))
+            player_Sprite = 3
+        elif player_Sprite == 3: 
+            drawImage("{}/sprites/Sprite_l_1.png".format(wd))
+            player_Sprite = 4
+        elif player_Sprite == 4: 
+            drawImage("{}/sprites/Sprite_l_3.png".format(wd))
+            player_Sprite = 1
             
-    elif player_sprite_direction == 4 :
+    elif player_Sprite_direction == 4 :
         
-        if player_sprite == 1 :
-            drawImage("u:/Eigene Dateien/sprite_u_1.png")
-            player_sprite = 2
-        elif player_sprite == 2: 
-            drawImage("u:/Eigene Dateien/sprite_u_2.png")
-            player_sprite = 3
-        elif player_sprite == 3: 
-            drawImage("u:/Eigene Dateien/sprite_u_1.png")
-            player_sprite = 4
-        elif player_sprite == 4: 
-            drawImage("u:/Eigene Dateien/sprite_u_3.png")
-            player_sprite = 1
+        if player_Sprite == 1 :
+            drawImage("{}/sprites/Sprite_u_1.png".format(wd))
+            player_Sprite = 2
+        elif player_Sprite == 2: 
+            drawImage("{}/sprites/Sprite_u_2.png".format(wd))
+            player_Sprite = 3
+        elif player_Sprite == 3: 
+            drawImage("{}/sprites/Sprite_u_1.png".format(wd))
+            player_Sprite = 4
+        elif player_Sprite == 4: 
+            drawImage("{}/sprites/Sprite_u_3.png".format(wd))
+            player_Sprite = 1
     sleep(0.5)
-    drawImage("u:/Eigene Dateien/White.png")
+    drawImage("{}/sprites/white.png".format(wd))
     
     
            
