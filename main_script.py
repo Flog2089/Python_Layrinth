@@ -4,42 +4,121 @@ from time import sleep
 from sys import exit
 from random import randint
 import os
+from modButtons import Button
+
 
 # Print the current working directory
 wd = os.getcwd().replace("\\", "/")
 print(wd)
 print("{}/sprites/Sprite_d_1.png".format(wd))
 
-
+trailing_color = "white"
 player_Sprite_direction = 1
 player_Sprite = 1
 
 
-# Zeichnet das Grundgitter:
 
+
+
+#definition von variablen
+PLAYGROUND_HEIGHT = 1000
+PLAYGROUND_WIDTH = 1000
+CELLSIZE = 40
+game_loop = False
+difficulty = 0
+#turtle wird mit dem angegebenen bild erschaffen
+makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
+enemies = []
+
+#setzt die größe des turtle fensters auf die oben definierten variablen
+setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
+
+
+#class difficultyButton() mit class Button als parent
+class difficultyButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, difficulty):
+        self.difficulty = difficulty
+        super(difficultyButton, self).__init__(posX, posY, width, height, color, text)
+
+    #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
+    def click_action(self):
+        global difficulty
+        global game_loop
+        difficulty = self.difficulty
+        game_loop = True
+        print(self.difficulty)
+        
+        
+    
+class Enemy:
+    def __init__(self, color, difficulty, name, sprite, posX, posY):
+        self.color = color
+        self.difficutly = difficulty
+        self.name = name
+        self.sprite = sprite
+        self.posX = posX
+        self.posY = posY
+        self.pos = [posX, posY]
+        self.diff = [0, 0]
+        enemies.append(self)
+        self.pos_temp = self.pos
+        
+    def catch_action(self):
+        print("caught")
+    
+    def advance(self):
+        turtle_pos = getPos()
+        self.pos_temp = self.pos
+        self.diff = [self.pos[0] - turtle_pos[0], self.pos[1] - turtle_pos[1]]
+        
+        if abs(self.diff[1]) <= abs(self.diff[0]) and self.diff != [0, 0]:
+            self.pos[0] = self.pos[0] - CELLSIZE if (self.diff[0] >= 0) else self.pos[0] + CELLSIZE
+        elif abs(self.diff[1]) > abs(self.diff[0]) and self.diff != [0, 0]:
+            self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
+        if self.diff == [0, 0]:
+            self.catch_action()
+        print(self.diff)
+        
+        setPos(self.pos)
+        setFillColor("brown")
+        fill()
+        setPos(turtle_pos)
+#        print(self.pos)
+#        print(self.pos_temp)
+
+    def clear_shadow(self):
+        turtle_pos = getPos()
+        setPos(self.pos_temp)
+        setFillColor("white")
+        fill()
+        setPos(turtle_pos)
+            
+pprob = Enemy(1, 1, 1, 1, 0, 0)
+            
 
 def doStep():
     global player_Sprite_direction
     global player_Sprite
+    global trailing_color
     # Einen Schritt nach vorne machen.
-    forward(CELLSIZE)
     # Falls die Turtle auf einem schwarzen Feld landet,
     # setzen wir sie wieder zurück und drehen sie dafür.
     if getPixelColorStr() == "red" :
         print("Du hast gewonnen!!!")
         exit()
-    elif getPixelColorStr() == "black":
-        back(CELLSIZE)
+    elif getPixelColorAheadStr(CELLSIZE) == "black":
         right(90)
         player_Sprite_direction += 1
         if player_Sprite_direction > 4 :
             player_Sprite_direction = 1
-    elif getPixelColorStr() == "blue":
-        back(CELLSIZE)
+    elif getPixelColorAheadStr(CELLSIZE) == "blue":
         right(180)
         player_Sprite_direction += 2
         if player_Sprite_direction > 4 :
             player_Sprite_direction -= 4
+    else:
+        fd(CELLSIZE)
             
     if player_Sprite_direction == 1 :
 
@@ -101,93 +180,6 @@ def doStep():
             drawImage("{}/sprites/Sprite_u_3.png".format(wd))
             player_Sprite = 1
     
-
-### MAIN ###
-
-#makeTurtle()
-
-
-
-
-
-
-from modButtons import Button
-
-#definition von variablen
-PLAYGROUND_HEIGHT = 1000
-PLAYGROUND_WIDTH = 1000
-CELLSIZE = 40
-game_loop = False
-difficulty = 0
-#turtle wird mit dem angegebenen bild erschaffen
-makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
-enemies = []
-
-#setzt die größe des turtle fensters auf die oben definierten variablen
-setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
-
-
-#class difficultyButton() mit class Button als parent
-class difficultyButton(Button):
-    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
-    def __init__(self, posX, posY, width, height, color, text, difficulty):
-        self.difficulty = difficulty
-        super(difficultyButton, self).__init__(posX, posY, width, height, color, text)
-
-    #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
-    def click_action(self):
-        global difficulty
-        global game_loop
-        difficulty = self.difficulty
-        game_loop = True
-        print(self.difficulty)
-        
-        
-    
-class Enemy:
-    def __init__(self, color, difficulty, name, sprite, posX, posY):
-        self.color = color
-        self.difficutly = difficulty
-        self.name = name
-        self.sprite = sprite
-        self.posX = posX
-        self.posY = posY
-        self.pos = [posX, posY]
-        self.diff = [0, 0]
-        enemies.append(self)
-        
-    def catch_action(self):
-        print("caught")
-    
-    def advance(self):
-        turtle_pos = getPos()
-        self.pos_temp = self.pos
-        self.diff = [self.pos[0] - turtle_pos[0], self.pos[1] - turtle_pos[1]]
-        
-        if abs(self.diff[1]) <= abs(self.diff[0]) and self.diff != [0, 0]:
-            self.pos[0] = self.pos[0] - CELLSIZE if (self.diff[0] >= 0) else self.pos[0] + CELLSIZE
-        elif abs(self.diff[1]) > abs(self.diff[0]) and self.diff != [0, 0]:
-            self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
-        if self.diff == [0, 0]:
-            self.catch_action()
-        print(self.diff)
-        
-        setPos(self.pos)
-        setFillColor("brown")
-        fill()
-        setPos(turtle_pos)
-#        print(self.pos)
-#        print(self.pos_temp)
-
-    def clear_shadow(self):
-        turtle_pos = getPos()
-        setPos(self.pos_temp)
-        setFillColor("white")
-        fill()
-        setPos(turtle_pos)
-            
-pprob = Enemy(1, 1, 1, 1, 0, 0)
-            
 
 # Zeichnet das Grundgitter:
 def drawGrid():
@@ -309,6 +301,7 @@ while not game_loop:
     pass
 
 if game_loop:
+    a = 1
     clear()
     showTurtle()
     drawGrid()
@@ -318,14 +311,20 @@ if game_loop:
     setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
     penUp()
     showTurtle()
-    while game_loop:
+    while game_loop: 
+        a += 1
         ht()
         doStep()
-        pprob.advance()
+        if a % 2 == 0:
+            pprob.clear_shadow()
+            pprob.advance()
         
         sleep(0.7 - 0.2 * difficulty)
         setFillColor("white")
+        bk(18)
+        trailing_color = getPixelColorStr()
+        fd(18)
         drawImage("{}/sprites/white.png".format(wd))
-
-        pprob.clear_shadow()
+        setFillColor(trailing_color)
+        fill()
         
