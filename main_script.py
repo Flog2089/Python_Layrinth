@@ -157,28 +157,34 @@ class Enemy:
         enemies.append(self)
         
     def catch_action(self):
-        pass
+        print("caught")
     
     def advance(self):
         turtle_pos = getPos()
         self.pos_temp = self.pos
         self.diff = [self.pos[0] - turtle_pos[0], self.pos[1] - turtle_pos[1]]
         
-        if abs(self.diff[1]) <= abs(self.diff[0]):
+        if abs(self.diff[1]) <= abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[0] = self.pos[0] - CELLSIZE if (self.diff[0] >= 0) else self.pos[0] + CELLSIZE
-        elif abs(self.diff[1]) > abs(self.diff[0]):
+        elif abs(self.diff[1]) > abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
+        if self.diff == [0, 0]:
+            self.catch_action()
         print(self.diff)
         
         setPos(self.pos)
         setFillColor("brown")
         fill()
-        sleep(0.1)
-        setFillColor("white")
-        fill()
         setPos(turtle_pos)
 #        print(self.pos)
 #        print(self.pos_temp)
+
+    def clear_shadow(self):
+        turtle_pos = getPos()
+        setPos(self.pos_temp)
+        setFillColor("white")
+        fill()
+        setPos(turtle_pos)
             
 pprob = Enemy(1, 1, 1, 1, 0, 0)
             
@@ -315,10 +321,11 @@ if game_loop:
     while game_loop:
         ht()
         doStep()
-        
+        pprob.advance()
         
         sleep(0.7 - 0.2 * difficulty)
         setFillColor("white")
         drawImage("{}/sprites/white.png".format(wd))
-        pprob.advance()
+
+        pprob.clear_shadow()
         
