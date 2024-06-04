@@ -161,13 +161,24 @@ class Enemy:
     
     def advance(self):
         turtle_pos = getPos()
-        self.diff = [turtle_pos[0] - self.pos[0], turtle_pos[1] - self.pos[1]]
+        self.pos_temp = self.pos
+        self.diff = [self.pos[0] - turtle_pos[0], self.pos[1] - turtle_pos[1]]
         
-        if self.diff[0] <= self.diff[1] and self.pos[0] != turtle_pos[0]:
-            self.pos[0] = self.pos[0] + CELLSIZE if (self.diff[0] > 0) else self.pos[0] - CELLSIZE
-        elif self.diff[0] >= self.diff[1] and self.pos[1] != turtle_pos[1]:
-            self.pos[1] = self.pos[1] + CELLSIZE if (self.diff[1] > 0) else self.pos[1] - CELLSIZE
+        if abs(self.diff[1]) <= abs(self.diff[0]):
+            self.pos[0] = self.pos[0] - CELLSIZE if (self.diff[0] >= 0) else self.pos[0] + CELLSIZE
+        elif abs(self.diff[1]) > abs(self.diff[0]):
+            self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
         print(self.diff)
+        
+        setPos(self.pos)
+        setFillColor("brown")
+        fill()
+        sleep(0.1)
+        setFillColor("white")
+        fill()
+        setPos(turtle_pos)
+#        print(self.pos)
+#        print(self.pos_temp)
             
 pprob = Enemy(1, 1, 1, 1, 0, 0)
             
@@ -175,7 +186,7 @@ pprob = Enemy(1, 1, 1, 1, 0, 0)
 # Zeichnet das Grundgitter:
 def drawGrid():
     global CELLSIZE
-    CELLSIZE = PLAYGROUND_HEIGHT / (10 + 5 * difficulty)
+    CELLSIZE = 40
     hideTurtle()
     pd()
     setPenColor("gray")
@@ -205,12 +216,12 @@ def draw_border():
     fd(PLAYGROUND_WIDTH / 2 - 1 * CELLSIZE)
     for i in range(2):
         rt(90)
-        for j in range((10 + 5 * difficulty) -1):
+        for j in range(24):
             fd(CELLSIZE)
             fill()
             print(j, getPos())
         rt(90)
-        for j in range((10 + 5 * difficulty) -1):
+        for j in range(24):
             fd(CELLSIZE)
             fill()
             print(j, getPos())
@@ -303,10 +314,11 @@ if game_loop:
     showTurtle()
     while game_loop:
         ht()
-        #doStep()
-        pprob.advance()
+        doStep()
+        
         
         sleep(0.7 - 0.2 * difficulty)
         setFillColor("white")
         drawImage("{}/sprites/white.png".format(wd))
+        pprob.advance()
         
