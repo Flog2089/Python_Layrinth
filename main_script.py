@@ -207,7 +207,7 @@ def drawGrid():
     showTurtle()
 
 def draw_border():
-    ht()
+    hideTurtle()
     lt(90)
     pu()
     setFillColor("blue")
