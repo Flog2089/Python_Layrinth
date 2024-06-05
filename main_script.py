@@ -81,8 +81,10 @@ class Enemy:
         print(self.diff)
         
         setPos(self.pos)
-        setFillColor("brown")
-        fill()
+        a = heading()
+        setHeading(0)
+        drawImage("{}/sprites/enemy_sprite.png".format(wd))
+        setHeading(a)
         setPos(turtle_pos)
 #        print(self.pos)
 #        print(self.pos_temp)
@@ -90,8 +92,7 @@ class Enemy:
     def clear_shadow(self):
         turtle_pos = getPos()
         setPos(self.pos_temp)
-        setFillColor("white")
-        fill()
+        drawImage("{}/sprites/white.png".format(wd))
         setPos(turtle_pos)
             
 pprob = Enemy(1, 1, 1, 1, 0, 0)
@@ -321,10 +322,6 @@ if game_loop:
         
         sleep(0.7 - 0.2 * difficulty)
         setFillColor("white")
-        bk(18)
-        trailing_color = getPixelColorStr()
-        fd(18)
         drawImage("{}/sprites/white.png".format(wd))
-        setFillColor(trailing_color)
-        fill()
+        
         
