@@ -83,6 +83,8 @@ class Enemy:
         setPos(self.pos)
         a = heading()
         setHeading(0)
+        setFillColor("white")
+        fill()
         drawImage("{}/sprites/enemy_sprite.png".format(wd))
         setHeading(a)
         setPos(turtle_pos)
@@ -95,7 +97,7 @@ class Enemy:
         drawImage("{}/sprites/white.png".format(wd))
         setPos(turtle_pos)
             
-pprob = Enemy(1, 1, 1, 1, 0, 0)
+pprob = Enemy(1, 1, 1, 1, 80, 80)
             
 
 def doStep():
