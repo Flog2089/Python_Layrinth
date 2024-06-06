@@ -9,14 +9,14 @@ from modButtons import Button
 
 # Print the current working directory
 wd = os.getcwd().replace("\\", "/")
-print(wd)
 print("{}/sprites/Sprite_d_1.png".format(wd))
 
 trailing_color = "white"
 player_Sprite_direction = 1
 player_Sprite = 1
+save_slot = 1
 
-
+ 
 
 
 
@@ -65,7 +65,13 @@ class Enemy:
         self.pos_temp = self.pos
         
     def catch_action(self):
+        global game_loop
         print("caught")
+        game_loop = False
+        
+    def check_catch(self):
+        if self.pos == getPos():
+            self.catch_action()
     
     def advance(self):
         turtle_pos = getPos()
@@ -76,9 +82,8 @@ class Enemy:
             self.pos[0] = self.pos[0] - CELLSIZE if (self.diff[0] >= 0) else self.pos[0] + CELLSIZE
         elif abs(self.diff[1]) > abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
-        if self.diff == [0, 0]:
-            self.catch_action()
-        print(self.diff)
+        
+        #print(self.diff)
         
         setPos(self.pos)
         a = heading()
@@ -220,12 +225,12 @@ def draw_border():
         for j in range(24):
             fd(CELLSIZE)
             fill()
-            print(j, getPos())
+            #print(j, getPos())
         rt(90)
         for j in range(24):
             fd(CELLSIZE)
             fill()
-            print(j, getPos())
+            #print(j, getPos())
     
 #Bei Mausklick eine Zelle schwarz färben / auf dem Startbilschirm click an button weitergeben
 @onMouseHit
@@ -298,13 +303,33 @@ def start_screen():
     hard_button.make()
 
 
+def read_score(save_slot):
+    f = open("saves/save{}.txt".format(save_slot), "r")
+    hi_score = f .readline()
+    f.close()
+    return hi_score
+
+def save_score(score, save_slot):
+    old_score = read_score(save_slot)
+    f = open("saves/save{}.txt".format(save_slot), "w")
+    if old_score < score:
+        f.write(str(score))
+        print("yes")
+    else:
+        f.write(str(old_score))
+        print("no")
+    f.close()
+
+
 
 start_screen()
 while not game_loop:
     pass
 
+a = 9999999
 if game_loop:
     a = 1
+    print(read_score(save_slot))
     clear()
     showTurtle()
     drawGrid()
@@ -315,15 +340,19 @@ if game_loop:
     penUp()
     showTurtle()
     while game_loop: 
+        
         a += 1
         ht()
-        doStep()
+        
         if a % 2 == 0:
             pprob.clear_shadow()
             pprob.advance()
-        
+        pprob.check_catch()
+        doStep()
+        pprob.check_catch()
         sleep(0.7 - 0.2 * difficulty)
         setFillColor("white")
+        
         drawImage("{}/sprites/white.png".format(wd))
-        
-        
+save_score(a, save_slot)
+    
