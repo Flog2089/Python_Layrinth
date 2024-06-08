@@ -253,15 +253,22 @@ def onClick(x, y):
             # Die Turtle wieder dahin zurücksetzen,
             # wo sie am Anfang war.
             setPos(turtle_x, turtle_y)
-#definition Aktions/Fragezeichenfelder#            
+#definition Aktions/Fragezeichenfelder           
 def action_cell() :
     r = randint(1, 3)
-    if r == 1 :
+    drawImage("{}/sprites/white.png".format(wd))
+    if r == 1 :  
         fd(CELLSIZE * 2)
     elif r == 2:
         sleep_multiplier = 0.1
     elif r == 3:
-        setPos((randint(1, 10))*40 + 20, (randint(1, 10))*40 +20)        
+        setPos((randint(1, 10))*40 + 20, (randint(1, 10))*40 +20) 
+
+#definition plazierung der Aktions/Fragezeichenfelder  
+def draw_action_cells() :
+    for i in range (5) :
+        setPos((randint(1, 10))*40 + 20, (randint(1, 10))*40 +20) 
+        drawImage("{}/sprites/action_sprite.png".format(wd))
 #definition startbildschirm
 def start_screen():
     hideTurtle()
@@ -318,6 +325,7 @@ if game_loop:
     showTurtle()
     drawGrid()
     draw_border()
+    draw_action_cells()
     # An dieser Stelle könntest du ein Feld als Ziel färben.
     # Die Turtle auf ein Anfangsfeld setzen:
     setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
