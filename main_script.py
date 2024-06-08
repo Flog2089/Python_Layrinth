@@ -9,7 +9,7 @@ from modButtons import Button
 
 # Print the current working directory
 wd = os.getcwd().replace("\\", "/")
-print("{}/sprites/Sprite_d_1.png".format(wd))
+
 
 trailing_color = "white"
 player_Sprite_direction = 1
@@ -47,7 +47,7 @@ class difficultyButton(Button):
         global game_loop
         difficulty = self.difficulty
         game_loop = True
-        print(self.difficulty)
+        
         
         
     
@@ -304,20 +304,22 @@ def start_screen():
 
 
 def read_score(save_slot):
+    global hi_score
     f = open("saves/save{}.txt".format(save_slot), "r")
-    hi_score = f .readline()
+    hi_score = int(f.readline())
     f.close()
-    return hi_score
+#    print("hi score:", hi_score)
 
 def save_score(score, save_slot):
-    old_score = read_score(save_slot)
+    global hi_score
+#    print("current score", score)
     f = open("saves/save{}.txt".format(save_slot), "w")
-    if old_score < score:
+    if score > hi_score:
         f.write(str(score))
-        print("yes")
-    else:
-        f.write(str(old_score))
-        print("no")
+#        print("yes")
+    elif score < hi_score:
+        f.write(str(hi_score))
+#        print("no")
     f.close()
 
 
@@ -329,7 +331,7 @@ while not game_loop:
 a = 9999999
 if game_loop:
     a = 1
-    print(read_score(save_slot))
+    read_score(save_slot)
     clear()
     showTurtle()
     drawGrid()
@@ -354,5 +356,6 @@ if game_loop:
         setFillColor("white")
         
         drawImage("{}/sprites/white.png".format(wd))
+
 save_score(a, save_slot)
-    
+read_score(save_slot)    
