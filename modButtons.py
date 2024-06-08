@@ -18,6 +18,7 @@ class Button(object):
         
         
     def make(self):
+        heading(0)
         pd()
         setPos(self.posX, self.posY)
         moveTo(self.posX - self.width / 2, self.posY)

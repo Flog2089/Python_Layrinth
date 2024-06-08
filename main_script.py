@@ -16,7 +16,7 @@ player_Sprite_direction = 1
 player_Sprite = 1
 save_slot = 1
 
- 
+slot_selected = False 
 
 
 
@@ -29,6 +29,7 @@ difficulty = 0
 #turtle wird mit dem angegebenen bild erschaffen
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
 enemies = []
+bgcolor = "white"
 
 #setzt die größe des turtle fensters auf die oben definierten variablen
 setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
@@ -47,6 +48,48 @@ class difficultyButton(Button):
         global game_loop
         difficulty = self.difficulty
         game_loop = True
+        
+class saveSlotButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, slot, border, border_color):
+        self.slot = slot
+        self.border = border
+        self.border_color = border_color
+        self.toggle = False
+        super(saveSlotButton, self).__init__(posX, posY, width, height, color, text)
+        print("work")
+
+    #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
+    def click_action(self):
+        global save_slot
+        if not self.toggle:
+            save_slot = self.slot
+            setPenColor(self.border_color)
+            setPenWidth(self.border)
+            setHeading(0)
+            setPos(self.posX, self.posY)
+            fd(self.border * 0.5)
+            pd()
+            moveTo(self.posX - self.width / 2 - self.border * 0.5, self.posY + self.border * 0.5)
+            lt(90)
+            fd(self.height + self.border)
+            lt(90)
+            fd(self.width + self.border)
+            lt(90)
+            fd(self.height + self.border)
+            lt(90)
+            fd(self.width / 2)
+            rt(90)
+            pu()
+            bk(self.height / 2)
+            self.toggle = not self.toggle
+        else:
+            fd(self.height / 2)
+            setFillColor(bgcolor)
+            fill()
+            bk(self.height / 2)
+            self.toggle = not self.toggle
+        print("click")
         
         
         
@@ -260,6 +303,7 @@ def onClick(x, y):
 
 #definition startbildschirm
 def start_screen():
+    clear()
     hideTurtle()
 
     #füllt alles mit einem angenehmen 777777 grau aus
@@ -303,6 +347,12 @@ def start_screen():
     hard_button.make()
 
 
+def save_slot_selection():
+    clear()
+    slot1_button = saveSlotButton(0, 300, 200, 100, "red", "slot 1", 1, 10, "green")
+    slot1_button.make()
+    
+    
 def read_score(save_slot):
     global hi_score
     f = open("saves/save{}.txt".format(save_slot), "r")
@@ -321,41 +371,44 @@ def save_score(score, save_slot):
         f.write(str(hi_score))
 #        print("no")
     f.close()
+    
+    
+save_slot_selection()
 
-
+while not slot_selected:
+    pass
 
 start_screen()
+
 while not game_loop:
     pass
 
-a = 9999999
-if game_loop:
-    a = 1
-    read_score(save_slot)
-    clear()
-    showTurtle()
-    drawGrid()
-    draw_border()
-    # An dieser Stelle könntest du ein Feld als Ziel färben.
-    # Die Turtle auf ein Anfangsfeld setzen:
-    setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
-    penUp()
-    showTurtle()
-    while game_loop: 
-        
-        a += 1
-        ht()
-        
-        if a % 2 == 0:
-            pprob.clear_shadow()
-            pprob.advance()
-        pprob.check_catch()
-        doStep()
-        pprob.check_catch()
-        sleep(0.7 - 0.2 * difficulty)
-        setFillColor("white")
-        
-        drawImage("{}/sprites/white.png".format(wd))
+a = 1
+read_score(save_slot)
+clear()
+showTurtle()
+drawGrid()
+draw_border()
+# An dieser Stelle könntest du ein Feld als Ziel färben.
+# Die Turtle auf ein Anfangsfeld setzen:
+setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
+penUp()
+showTurtle()
+while game_loop: 
+    
+    a += 1
+    ht()
+    
+    if a % 2 == 0:
+        pprob.clear_shadow()
+        pprob.advance()
+    pprob.check_catch()
+    doStep()
+    pprob.check_catch()
+    sleep(0.7 - 0.2 * difficulty)
+    setFillColor("white")
+    
+    drawImage("{}/sprites/white.png".format(wd))
 
 save_score(a, save_slot)
 read_score(save_slot)    
