@@ -15,9 +15,11 @@ class Button(object):
         setFillColor(self.color)
         
         self.buttons.append(self)
+        self.make()
         
         
     def make(self):
+        setFontSize(24)
         heading(0)
         pd()
         setPos(self.posX, self.posY)

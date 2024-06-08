@@ -349,8 +349,13 @@ def start_screen():
 
 def save_slot_selection():
     clear()
-    slot1_button = saveSlotButton(0, 300, 200, 100, "red", "slot 1", 1, 10, "green")
-    slot1_button.make()
+    setPos(0, 400)
+    setPenColor("black")
+    setFontSize(60)
+    label("Select your save slot:", adjust = "c")
+    slot1_button = saveSlotButton(0, 300, 200, 100, "red", "slot 1", 1, 10, "dark red")
+    slot2_button = saveSlotButton(0, 0, 200, 100, "red", "slot 1", 1, 10, "dark red")
+    slot3_button = saveSlotButton(0, -300, 200, 100, "red", "slot 1", 1, 10, "dark red")
     
     
 def read_score(save_slot):
