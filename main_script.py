@@ -9,7 +9,6 @@ from modButtons import Button
 
 # Print the current working directory
 wd = os.getcwd().replace("\\", "/")
-print("{}/sprites/Sprite_d_1.png".format(wd))
 
 trailing_color = "white"
 player_Sprite_direction = 1
@@ -92,7 +91,6 @@ class SaveSlotButton(Button):
     def unclick(cls):
         global save_slot
         for b in cls.save_slot_buttons:
-            print(b.slot, save_slot)
             if b.slot != save_slot:
                 setPos(b.posX, b.posY)
                 fd(b.border * 0.5)
@@ -155,7 +153,6 @@ class Enemy:
         
     def catch_action(self):
         global game_loop
-        print("caught")
         game_loop = False
         
     def check_catch(self):
@@ -172,7 +169,6 @@ class Enemy:
         elif abs(self.diff[1]) > abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
         
-        #print(self.diff)
         
         setPos(self.pos)
         a = heading()
@@ -182,8 +178,6 @@ class Enemy:
         drawImage("{}/sprites/{}.png".format(wd, self.sprite))
         setHeading(a)
         setPos(turtle_pos)
-#        print(self.pos)
-#        print(self.pos_temp)
 
     def clear_shadow(self):
         turtle_pos = getPos()
@@ -201,10 +195,7 @@ def doStep():
     # Einen Schritt nach vorne machen.
     # Falls die Turtle auf einem schwarzen Feld landet,
     # setzen wir sie wieder zurück und drehen sie dafür.
-    if getPixelColorStr() == "red" :
-        print("Du hast gewonnen!!!")
-        exit()
-    elif getPixelColorAheadStr(CELLSIZE) == "black":
+    if getPixelColorAheadStr(CELLSIZE) == "black":
         right(90)
         player_Sprite_direction += 1
         if player_Sprite_direction > 4 :
@@ -320,22 +311,16 @@ def draw_border():
         for j in range(24):
             fd(CELLSIZE)
             fill()
-            #print(j, getPos())
         rt(90)
         for j in range(24):
             fd(CELLSIZE)
             fill()
-            #print(j, getPos())
     
 #Bei Mausklick eine Zelle schwarz färben / auf dem Startbilschirm click an button weitergeben
 @onMouseHit
 def onClick(x, y):
-    if not slot_selected:
-        Button.handle_click(x, y)
-#        SaveSlotButton.unclick()
-    elif not game_loop:
-        Button.handle_click(x, y)
-    else:
+    Button.handle_click(x, y)
+    if game_loop:
         xx = (x - 20) // CELLSIZE
         xxx = xx * CELLSIZE + CELLSIZE
         yy = (y - 20) // CELLSIZE
@@ -365,10 +350,6 @@ def onClick(x, y):
             # wo sie am Anfang war.
 
         setPos(turtle_x, turtle_y)
-
-
-
-    print(block_loc)
 
 
 
@@ -437,7 +418,6 @@ def read_score(save_slot):
     f = open("saves/save{}.txt".format(save_slot), "r")
     hi_score = int(f.readline())
     f.close()
-#    print("hi score:", hi_score)
 
 def read_score_return(save_slot):
     f = open("saves/save{}.txt".format(save_slot), "r")
@@ -447,14 +427,13 @@ def read_score_return(save_slot):
 
 def save_score(score, save_slot):
     global hi_score
-#    print("current score", score)
     f = open("saves/save{}.txt".format(save_slot), "w")
     if score > hi_score:
         f.write(str(score))
-#        print("yes")
+
     elif score < hi_score:
         f.write(str(hi_score))
-#        print("no")
+
     f.close()
 
 
@@ -476,6 +455,8 @@ start_screen()
 
 while not game_loop:
     pass
+for button in Button.buttons:
+    button.destroy()
 
 a = 1
 read_score(save_slot)

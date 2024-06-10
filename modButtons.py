@@ -8,6 +8,7 @@ class Button(object):
         self.height = height
         self.text = text
         self.color = makeColor(color)
+        self.is_working = True
         
         hideTurtle()
         setPenWidth(3)
@@ -38,12 +39,15 @@ class Button(object):
         fill()
         label(self.text, adjust = "c")
         
-    
+    def destroy(self):
+        self.is_working = False    
+
     @classmethod
     def handle_click(cls, x, y):
         for button in cls.buttons:
             if button.posX - button.width / 2 < x < button.posX + button.width / 2 and button.posY > y > button.posY - button.height:
-                button.click_action()
+                if button.is_working:
+                    button.click_action()
         
     def click_action(self):
         print("hit")
