@@ -1,7 +1,7 @@
 from gturtle import *
 class Button(object):
     buttons = []
-    def __init__(self, posX, posY, width, height, color, text):
+    def __init__(self, posX, posY, width, height, color, text, radius):
         self.posX = posX
         self.posY = posY
         self.width = width
@@ -9,6 +9,7 @@ class Button(object):
         self.text = text
         self.color = makeColor(color)
         self.is_working = True
+        self.radius = radius
         
         hideTurtle()
         setPenWidth(3)
@@ -16,7 +17,7 @@ class Button(object):
         setFillColor(self.color)
         
         self.buttons.append(self)
-        self.make()
+        self.rounded_make()
         
         
     def make(self):
@@ -33,6 +34,34 @@ class Button(object):
         fd(self.height)
         lt(90)
         fd(self.width / 2)
+        rt(90)
+        pu()
+        bk(self.height / 2)
+        fill()
+        label(self.text, adjust = "c")
+        
+    def rounded_make(self):
+        setFontSize(24)
+        heading(-90)
+        pd()
+        setPos(self.posX, self.posY)
+        fd(self.width / 2 - self.radius)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.height - self.radius * 2)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.width- self.radius * 2)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.height- self.radius * 2)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.width / 2 - self.radius)
         rt(90)
         pu()
         bk(self.height / 2)
@@ -57,3 +86,7 @@ class Button(object):
 @onMouseHit
 def onClick(x, y):
     Button.handle_click(x, y)
+    
+if __name__ == "__main__":
+    makeTurtle()
+    a = Button(0, 0, 200, 100, "green", "hello", 25)

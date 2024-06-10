@@ -41,9 +41,9 @@ setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
 #class DifficultyButton() mit class Button als parent
 class DifficultyButton(Button):
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
-    def __init__(self, posX, posY, width, height, color, text, difficulty):
+    def __init__(self, posX, posY, width, height, color, text, difficulty, radius):
         self.difficulty = difficulty
-        super(DifficultyButton, self).__init__(posX, posY, width, height, color, text)
+        super(DifficultyButton, self).__init__(posX, posY, width, height, color, text, radius)
 
     #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
     def click_action(self):
@@ -55,7 +55,7 @@ class DifficultyButton(Button):
 class SaveSlotButton(Button):
     save_slot_buttons = []
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
-    def __init__(self, posX, posY, width, height, color, text, slot, border, border_color):
+    def __init__(self, posX, posY, width, height, color, text, slot, border, border_color, radius):
         self.slot = slot
         self.border = border
         self.border_color = border_color
@@ -63,31 +63,15 @@ class SaveSlotButton(Button):
         self.save_slot_buttons.append(self)
         self.saved_score = read_score_return(self.slot)
         self.saved_text = "High Score: " + str(self.saved_score)
-        super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text)
+        super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text, radius)
+        self.make_on_top()
 
 
-    def make(self):
-        setFontSize(24)
-        heading(0)
-        pd()
-        setPos(self.posX, self.posY)
-        moveTo(self.posX - self.width / 2, self.posY)
-        lt(90)
-        fd(self.height)
-        lt(90)
-        fd(self.width)
-        lt(90)
-        fd(self.height)
-        lt(90)
-        fd(self.width / 2)
-        rt(90)
-        pu()
-        bk(self.height / 2)
-        fill()
-        label(self.text, adjust = "c")
+    def make_on_top(self):
         bk(self.height / 3.3)
         setFontSize(19)
         label(self.saved_text, adjust = "c")
+        
 
     @classmethod
     def unclick(cls):
@@ -104,23 +88,33 @@ class SaveSlotButton(Button):
     #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
     def click_action(self):
         global save_slot
-
+        
+        
         save_slot = self.slot
         setPenColor(self.border_color)
         setPenWidth(self.border)
         setHeading(0)
         setPos(self.posX, self.posY)
-        fd(self.border * 0.5)
+        fd(self.border / 2)
+        lt(90)
         pd()
-        moveTo(self.posX - self.width / 2 - self.border * 0.5, self.posY + self.border * 0.5)
-        lt(90)
-        fd(self.height + self.border)
-        lt(90)
-        fd(self.width + self.border)
-        lt(90)
-        fd(self.height + self.border)
-        lt(90)
-        fd(self.width / 2)
+        fd(self.width / 2 - self.radius + self.border / 2)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.height - self.radius * 2 + self.border)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.width- self.radius * 2 + self.border)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.height- self.radius * 2 + self.border)
+        for _ in range(23):
+            fd((self.radius * 3.14159 / 180) * 3.91)
+            rt(-3.91)
+        fd(self.width / 2 - self.radius + self.border)
         rt(90)
         pu()
         bk(self.height / 2)
@@ -130,8 +124,8 @@ class SaveSlotButton(Button):
 
 class ApplySlotButton(Button):
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
-    def __init__(self, posX, posY, width, height, color, text):
-        super(ApplySlotButton, self).__init__(posX, posY, width, height, color, text)
+    def __init__(self, posX, posY, width, height, color, text, radius):
+        super(ApplySlotButton, self).__init__(posX, posY, width, height, color, text, radius)
 
 
     def click_action(self):
@@ -430,14 +424,14 @@ def start_screen():
     setPenColor("black")
     label("Select difficulty:", adjust = "c")
 
-    easy_button = DifficultyButton(-250, -200, 200, 100, "green", "Easy", 1)
-    easy_button.make()
+    easy_button = DifficultyButton(-250, -200, 200, 100, "green", "Easy", 1, 20)
 
-    medium_button = DifficultyButton(0, -200, 200, 100, "yellow", "Medium", 2)
-    medium_button.make()
 
-    hard_button = DifficultyButton(250, -200, 200, 100, "red", "Hard", 3)
-    hard_button.make()
+    medium_button = DifficultyButton(0, -200, 200, 100, "yellow", "Medium", 2, 20)
+
+
+    hard_button = DifficultyButton(250, -200, 200, 100, "red", "Hard", 3, 20)
+  
 
 
 def save_slot_selection():
@@ -446,10 +440,10 @@ def save_slot_selection():
     setPenColor("black")
     setFontSize(60)
     label("Select your save slot:", adjust = "c")
-    slot1_button = SaveSlotButton(0, 300, 200, 100, "red", "slot 1", 1, 10, "dark red")
-    slot2_button = SaveSlotButton(0, 0, 200, 100, "red", "slot 2", 2, 10, "dark red")
-    slot3_button = SaveSlotButton(0, -300, 200, 100, "red", "slot 3", 3, 10, "dark red")
-    apply_button = ApplySlotButton(330, -300, 150, 100, "blue", "apply")
+    slot1_button = SaveSlotButton(0, 300, 200, 100, "red", "slot 1", 1, 10, "dark red", 20)
+    slot2_button = SaveSlotButton(0, 0, 200, 100, "red", "slot 2", 2, 10, "dark red", 20)
+    slot3_button = SaveSlotButton(0, -300, 200, 100, "red", "slot 3", 3, 10, "dark red", 20)
+    apply_button = ApplySlotButton(330, -300, 150, 100, "blue", "apply", 30)
 
 def read_score(save_slot):
     global hi_score
