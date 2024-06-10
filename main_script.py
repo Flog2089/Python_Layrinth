@@ -295,9 +295,6 @@ def drawGrid():
         setPos(-PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
         moveTo(+PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
 
-    setPos(10,10)
-    setFillColor("red")
-    fill()
     setPos(0, 0)
     showTurtle()
 
