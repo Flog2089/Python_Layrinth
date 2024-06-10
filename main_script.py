@@ -14,6 +14,7 @@ trailing_color = "white"
 player_Sprite_direction = 1
 player_Sprite = 1
 save_slot = 1
+sleep_multiplier = 0
 
 slot_selected = False
 dir_right = True
@@ -135,9 +136,9 @@ class ApplySlotButton(Button):
     def click_action(self):
         global slot_selected
         slot_selected = True
-        
-        
-    
+
+
+
 class Enemy:
     def __init__(self, color, difficulty, name, sprite, posX, posY):
         self.color = color
@@ -150,26 +151,26 @@ class Enemy:
         self.diff = [0, 0]
         enemies.append(self)
         self.pos_temp = self.pos
-        
+
     def catch_action(self):
         global game_loop
         game_loop = False
-        
+
     def check_catch(self):
         if self.pos == getPos():
             self.catch_action()
-    
+
     def advance(self):
         turtle_pos = getPos()
         self.pos_temp = self.pos
         self.diff = [self.pos[0] - turtle_pos[0], self.pos[1] - turtle_pos[1]]
-        
+
         if abs(self.diff[1]) <= abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[0] = self.pos[0] - CELLSIZE if (self.diff[0] >= 0) else self.pos[0] + CELLSIZE
         elif abs(self.diff[1]) > abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
-        
-        
+
+
         setPos(self.pos)
         a = heading()
         setHeading(0)
@@ -184,9 +185,9 @@ class Enemy:
         setPos(self.pos_temp)
         drawImage("{}/sprites/white.png".format(wd))
         setPos(turtle_pos)
-            
+
 pprob = Enemy(1, 1, 1, "enemy_sprite", 80, 80)
-            
+
 
 def doStep():
     global player_Sprite_direction
@@ -211,9 +212,12 @@ def doStep():
         player_Sprite_direction += 2
         if player_Sprite_direction > 4 :
             player_Sprite_direction -= 4
+    elif getPixelColorAheadStr(CELLSIZE) == "#000001":
+        drawImage("{}/sprites/white.png".format(wd))
+        action_cell()
     else:
         fd(CELLSIZE)
-            
+
     if player_Sprite_direction == 1 :
 
         if player_Sprite == 1 :
@@ -350,10 +354,22 @@ def onClick(x, y):
             # wo sie am Anfang war.
 
         setPos(turtle_x, turtle_y)
+#definition Aktions/Fragezeichenfelder
+def action_cell() :
+    r = randint(1, 3)
+    drawImage("{}/sprites/white.png".format(wd))
+    if r == 1 :
+        fd(CELLSIZE * 2)
+    elif r == 2:
+        sleep_multiplier = 0.1
+    elif r == 3:
+        setPos((randint(1, 10))*40, (randint(1, 10))*40)
 
-
-
-
+#definition plazierung der Aktions/Fragezeichenfelder
+def draw_action_cells() :
+    for i in range (5) :
+        setPos((randint(1, 10))*40, (randint(1, 10))*40)
+        drawImage("{}/sprites/action_sprite.png".format(wd))
 #definition startbildschirm
 def start_screen():
     clear()
@@ -492,7 +508,7 @@ while game_loop:
         dir_right = True
         change_color_orientation("black")
 
-        
+
 
 save_score(a, save_slot)
 read_score(save_slot)
