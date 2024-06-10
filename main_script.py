@@ -503,43 +503,15 @@ while game_loop:
     setFillColor("white")
 
     drawImage("{}/sprites/white.png".format(wd))
+    key = getKey()
+    if key == "a":
+        dir_right = False
+        change_color_orientation("green")
+    elif key == "d":
+        dir_right = True
+        change_color_orientation("black")
 
-a = 9999999
-if game_loop:
-    a = 1
-    print(read_score(save_slot))
-    clear()
-    showTurtle()
-    drawGrid()
-    draw_border()
-    # An dieser Stelle könntest du ein Feld als Ziel färben.
-    # Die Turtle auf ein Anfangsfeld setzen:
-    setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
-    penUp()
-    showTurtle()
-    while game_loop:
-
-        a += 1
-        ht()
-
-        if a % 2 == 0:
-            pprob.clear_shadow()
-            pprob.advance()
-        pprob.check_catch()
-        doStep()
-        pprob.check_catch()
-        sleep(0.7 - 0.2 * difficulty)
-        setFillColor("white")
-
-        drawImage("{}/sprites/white.png".format(wd))
-
-        key = getKey()
-        if key == "a":
-            dir_right = False
-            change_color_orientation("green")
-        elif key == "d":
-            dir_right = True
-            change_color_orientation("black")
+        
 
 save_score(a, save_slot)
 read_score(save_slot)
