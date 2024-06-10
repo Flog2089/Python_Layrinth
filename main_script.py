@@ -16,7 +16,8 @@ player_Sprite_direction = 1
 player_Sprite = 1
 save_slot = 1
 
- 
+dir_right = True
+block_loc = []
 
 
 
@@ -120,6 +121,12 @@ def doStep():
         player_Sprite_direction += 1
         if player_Sprite_direction > 4 :
             player_Sprite_direction = 1
+    elif getPixelColorAheadStr(CELLSIZE) == "green":
+        lt(90)
+        player_Sprite_direction -= 1
+        if player_Sprite_direction < 1 :
+            player_Sprite_direction = 4
+        
     elif getPixelColorAheadStr(CELLSIZE) == "blue":
         right(180)
         player_Sprite_direction += 2
@@ -238,23 +245,40 @@ def onClick(x, y):
     if not game_loop:
         difficultyButton.handle_click(x, y)
     else:
+        xx = (x - 20) // CELLSIZE
+        xxx = xx * CELLSIZE + CELLSIZE
+        yy = (y - 20) // CELLSIZE
+        yyy = yy * CELLSIZE + CELLSIZE
         # Die Position der Turtle speichern
         turtle_x = getX()
         turtle_y = getY()
-        if game_loop:
-            # Zelle schwarz färben
-            hideTurtle()
-            setPos(x, y)
-            if getPixelColorStr() == "white":
+        # Zelle schwarz färben
+        hideTurtle()
+        setPos(x, y)
+        if getPixelColorStr() == "white":
+            if dir_right:
                 setFillColor("black")
-                fill()
-            elif getPixelColorStr() == "black":
-                setFillColor("white")
-                fill()
+            else:
+                setFillColor("green")
+            fill()
+            
+            block_loc.append([xxx, yyy])  
+            
+    
+        elif getPixelColorStr() == "black" or getPixelColorStr() == "green":
+            setFillColor("white")
+            fill()
+            block_loc.remove([xxx, yyy]) 
+            
             # Die Turtle wieder dahin zurücksetzen,
             # wo sie am Anfang war.
-            setPos(turtle_x, turtle_y)
-            
+        
+        setPos(turtle_x, turtle_y)
+        
+        
+        
+    print(block_loc)
+          
 
 
 
@@ -310,7 +334,7 @@ def read_score(save_slot):
     return hi_score
 
 def save_score(score, save_slot):
-    old_score = read_score(save_slot)
+    old_score = int(read_score(save_slot))
     f = open("saves/save{}.txt".format(save_slot), "w")
     if old_score < score:
         f.write(str(score))
@@ -320,6 +344,14 @@ def save_score(score, save_slot):
         print("no")
     f.close()
 
+def change_color_orientation(color):
+    pos = getPos()
+    for block in block_loc:
+        setPos(block)
+        setFillColor(color)
+        fill()
+        
+        setPos(pos)
 
 
 start_screen()
@@ -354,5 +386,19 @@ if game_loop:
         setFillColor("white")
         
         drawImage("{}/sprites/white.png".format(wd))
+        
+        key = getKey()
+        if key == "a":
+            dir_right = False
+            change_color_orientation("green")
+        elif key == "d":
+            dir_right = True
+            change_color_orientation("black")
+                                    
 save_score(a, save_slot)
     
+    
+
+
+
+
