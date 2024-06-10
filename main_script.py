@@ -58,7 +58,33 @@ class SaveSlotButton(Button):
         self.border_color = border_color
         self.toggle = False
         self.save_slot_buttons.append(self)
+        self.saved_score = read_score_return(self.slot)
+        self.saved_text = "High Score: " + str(self.saved_score)
         super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text)
+        
+        
+    def make(self):
+        setFontSize(24)
+        heading(0)
+        pd()
+        setPos(self.posX, self.posY)
+        moveTo(self.posX - self.width / 2, self.posY)
+        lt(90)
+        fd(self.height)
+        lt(90)
+        fd(self.width)
+        lt(90)
+        fd(self.height)
+        lt(90)
+        fd(self.width / 2)
+        rt(90)
+        pu()
+        bk(self.height / 2)
+        fill()
+        label(self.text, adjust = "c")
+        bk(self.height / 3.3)
+        setFontSize(19)
+        label(self.saved_text, adjust = "c")
         
     @classmethod
     def unclick(cls):
@@ -387,6 +413,12 @@ def read_score(save_slot):
     hi_score = int(f.readline())
     f.close()
 #    print("hi score:", hi_score)
+
+def read_score_return(save_slot):
+    f = open("saves/save{}.txt".format(save_slot), "r")
+    hi_score = int(f.readline())
+    f.close()
+    return hi_score
 
 def save_score(score, save_slot):
     global hi_score
