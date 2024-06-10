@@ -297,6 +297,8 @@ def drawGrid():
 
     setPos(0, 0)
     showTurtle()
+    
+    draw_action_cells()
 
 def draw_border():
     hideTurtle()
@@ -364,8 +366,8 @@ def action_cell() :
 
 #definition plazierung der Aktions/Fragezeichenfelder
 def draw_action_cells() :
-    for i in range (5) :
-        setPos((randint(1, 10))*40, (randint(1, 10))*40)
+    for i in range (3 * difficulty) :
+        setPos((randint(-10, 10))*40, (randint(-10, 10))*40)
         drawImage("{}/sprites/action_sprite.png".format(wd))
 #definition startbildschirm
 def start_screen():
@@ -373,6 +375,9 @@ def start_screen():
     hideTurtle()
     home()
     setHeading(0)
+    
+    
+        
 
     #füllt alles mit einem angenehmen 777777 grau aus
     setPenColor("black")
@@ -450,7 +455,6 @@ def save_score(score, save_slot):
     f.close()
 
 
-save_slot_selection()
 
 def change_color_orientation(color):
     pos = getPos()
@@ -460,6 +464,8 @@ def change_color_orientation(color):
         fill()
 
         setPos(pos)
+
+save_slot_selection()
 
 while not slot_selected:
     pass
