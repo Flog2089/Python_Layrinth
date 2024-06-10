@@ -22,8 +22,8 @@ sleep_multiplier = 0
 
 
 #definition von variablen
-PLAYGROUND_HEIGHT =700 
-PLAYGROUND_WIDTH = 700
+PLAYGROUND_HEIGHT =1000 
+PLAYGROUND_WIDTH = 1000
 CELLSIZE = 40
 game_loop = False
 difficulty = 0
@@ -262,12 +262,12 @@ def action_cell() :
     elif r == 2:
         sleep_multiplier = 0.1
     elif r == 3:
-        setPos((randint(1, 10))*40 + 20, (randint(1, 10))*40 +20) 
+        setPos((randint(1, 10))*40, (randint(1, 10))*40) 
 
 #definition plazierung der Aktions/Fragezeichenfelder  
 def draw_action_cells() :
     for i in range (5) :
-        setPos((randint(1, 10))*40 + 20, (randint(1, 10))*40 +20) 
+        setPos((randint(1, 10))*40, (randint(1, 10))*40) 
         drawImage("{}/sprites/action_sprite.png".format(wd))
 #definition startbildschirm
 def start_screen():
