@@ -30,7 +30,7 @@ difficulty = 0
 #turtle wird mit dem angegebenen bild erschaffen
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
 enemies = []
-bgcolor = "white"
+bgcolor = "#88AABF"
 
 #setzt die größe des turtle fensters auf die oben definierten variablen
 setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
@@ -365,7 +365,7 @@ def start_screen():
     setPenColor("black")
     penUp()
     setPos(0, 330)
-    clean("#777777")
+    clean(bgcolor)
 
     #code für platzhalter text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
     label("Greetings, esteemed player!", adjust = "c")
@@ -389,7 +389,7 @@ def start_screen():
 
     #macht drei knöpfe (s.o.)
     setPos(0, -100)
-    setPenColor("dark grey")
+    setPenColor("black")
     label("Select difficulty:", adjust = "c")
 
     easy_button = DifficultyButton(-250, -200, 200, 100, "green", "Easy", 1)
@@ -403,7 +403,7 @@ def start_screen():
 
 
 def save_slot_selection():
-    clear()
+    clear(bgcolor)
     setPos(0, 400)
     setPenColor("black")
     setFontSize(60)
