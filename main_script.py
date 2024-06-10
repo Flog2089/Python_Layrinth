@@ -9,14 +9,16 @@ from modButtons import Button
 
 # Print the current working directory
 wd = os.getcwd().replace("\\", "/")
-
+print("{}/sprites/Sprite_d_1.png".format(wd))
 
 trailing_color = "white"
 player_Sprite_direction = 1
 player_Sprite = 1
 save_slot = 1
 
-slot_selected = False 
+slot_selected = False
+dir_right = True
+block_loc = []
 
 
 
@@ -48,7 +50,7 @@ class DifficultyButton(Button):
         global game_loop
         difficulty = self.difficulty
         game_loop = True
-        
+
 class SaveSlotButton(Button):
     save_slot_buttons = []
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
@@ -61,8 +63,8 @@ class SaveSlotButton(Button):
         self.saved_score = read_score_return(self.slot)
         self.saved_text = "High Score: " + str(self.saved_score)
         super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text)
-        
-        
+
+
     def make(self):
         setFontSize(24)
         heading(0)
@@ -85,7 +87,7 @@ class SaveSlotButton(Button):
         bk(self.height / 3.3)
         setFontSize(19)
         label(self.saved_text, adjust = "c")
-        
+
     @classmethod
     def unclick(cls):
         global save_slot
@@ -102,7 +104,7 @@ class SaveSlotButton(Button):
     #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
     def click_action(self):
         global save_slot
-        
+
         save_slot = self.slot
         setPenColor(self.border_color)
         setPenWidth(self.border)
@@ -123,15 +125,15 @@ class SaveSlotButton(Button):
         pu()
         bk(self.height / 2)
         SaveSlotButton.unclick()
-        
-        
-    
+
+
+
 class ApplySlotButton(Button):
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
     def __init__(self, posX, posY, width, height, color, text):
         super(ApplySlotButton, self).__init__(posX, posY, width, height, color, text)
-                
-                
+
+
     def click_action(self):
         global slot_selected
         slot_selected = True
@@ -207,6 +209,12 @@ def doStep():
         player_Sprite_direction += 1
         if player_Sprite_direction > 4 :
             player_Sprite_direction = 1
+    elif getPixelColorAheadStr(CELLSIZE) == "green":
+        lt(90)
+        player_Sprite_direction -= 1
+        if player_Sprite_direction < 1 :
+            player_Sprite_direction = 4
+
     elif getPixelColorAheadStr(CELLSIZE) == "blue":
         right(180)
         player_Sprite_direction += 2
@@ -328,23 +336,40 @@ def onClick(x, y):
     elif not game_loop:
         Button.handle_click(x, y)
     else:
+        xx = (x - 20) // CELLSIZE
+        xxx = xx * CELLSIZE + CELLSIZE
+        yy = (y - 20) // CELLSIZE
+        yyy = yy * CELLSIZE + CELLSIZE
         # Die Position der Turtle speichern
         turtle_x = getX()
         turtle_y = getY()
-        if game_loop:
-            # Zelle schwarz färben
-            hideTurtle()
-            setPos(x, y)
-            if getPixelColorStr() == "white":
+        # Zelle schwarz färben
+        hideTurtle()
+        setPos(x, y)
+        if getPixelColorStr() == "white":
+            if dir_right:
                 setFillColor("black")
-                fill()
-            elif getPixelColorStr() == "black":
-                setFillColor("white")
-                fill()
+            else:
+                setFillColor("green")
+            fill()
+
+            block_loc.append([xxx, yyy])
+
+
+        elif getPixelColorStr() == "black" or getPixelColorStr() == "green":
+            setFillColor("white")
+            fill()
+            block_loc.remove([xxx, yyy])
+
             # Die Turtle wieder dahin zurücksetzen,
             # wo sie am Anfang war.
-            setPos(turtle_x, turtle_y)
-            
+
+        setPos(turtle_x, turtle_y)
+
+
+
+    print(block_loc)
+
 
 
 
@@ -405,8 +430,8 @@ def save_slot_selection():
     slot1_button = SaveSlotButton(0, 300, 200, 100, "red", "slot 1", 1, 10, "dark red")
     slot2_button = SaveSlotButton(0, 0, 200, 100, "red", "slot 2", 2, 10, "dark red")
     slot3_button = SaveSlotButton(0, -300, 200, 100, "red", "slot 3", 3, 10, "dark red")
-    apply_button = ApplySlotButton(330, -300, 150, 100, "blue", "apply")    
-    
+    apply_button = ApplySlotButton(330, -300, 150, 100, "blue", "apply")
+
 def read_score(save_slot):
     global hi_score
     f = open("saves/save{}.txt".format(save_slot), "r")
@@ -431,9 +456,18 @@ def save_score(score, save_slot):
         f.write(str(hi_score))
 #        print("no")
     f.close()
-    
-    
+
+
 save_slot_selection()
+
+def change_color_orientation(color):
+    pos = getPos()
+    for block in block_loc:
+        setPos(block)
+        setFillColor(color)
+        fill()
+
+        setPos(pos)
 
 while not slot_selected:
     pass
@@ -454,11 +488,11 @@ draw_border()
 setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
 penUp()
 showTurtle()
-while game_loop: 
-    
+while game_loop:
+
     a += 1
     ht()
-    
+
     if a % 2 == 0:
         pprob.clear_shadow()
         pprob.advance()
@@ -467,8 +501,51 @@ while game_loop:
     pprob.check_catch()
     sleep(0.7 - 0.2 * difficulty)
     setFillColor("white")
-    
+
     drawImage("{}/sprites/white.png".format(wd))
 
+a = 9999999
+if game_loop:
+    a = 1
+    print(read_score(save_slot))
+    clear()
+    showTurtle()
+    drawGrid()
+    draw_border()
+    # An dieser Stelle könntest du ein Feld als Ziel färben.
+    # Die Turtle auf ein Anfangsfeld setzen:
+    setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
+    penUp()
+    showTurtle()
+    while game_loop:
+
+        a += 1
+        ht()
+
+        if a % 2 == 0:
+            pprob.clear_shadow()
+            pprob.advance()
+        pprob.check_catch()
+        doStep()
+        pprob.check_catch()
+        sleep(0.7 - 0.2 * difficulty)
+        setFillColor("white")
+
+        drawImage("{}/sprites/white.png".format(wd))
+
+        key = getKey()
+        if key == "a":
+            dir_right = False
+            change_color_orientation("green")
+        elif key == "d":
+            dir_right = True
+            change_color_orientation("black")
+
 save_score(a, save_slot)
-read_score(save_slot)    
+read_score(save_slot)
+
+
+
+
+
+
