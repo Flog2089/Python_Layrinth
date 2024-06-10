@@ -14,12 +14,13 @@ trailing_color = "white"
 player_Sprite_direction = 1
 player_Sprite = 1
 save_slot = 1
-sleep_multiplier = 0
+sleep_multiplier = 1
 
 slot_selected = False
 dir_right = True
 block_loc = []
 
+action_cells = []
 
 
 #definition von variablen
@@ -177,6 +178,10 @@ class Enemy:
         setFillColor("white")
         fill()
         drawImage("{}/sprites/{}.png".format(wd, self.sprite))
+        if self.pos in action_cells:
+            remove_action_cell(self.pos)
+        if self.pos in block_loc:
+            block_loc.remove(self.pos)
         setHeading(a)
         setPos(turtle_pos)
 
@@ -193,6 +198,7 @@ def doStep():
     global player_Sprite_direction
     global player_Sprite
     global trailing_color
+    pos = getPos()
     # Einen Schritt nach vorne machen.
     # Falls die Turtle auf einem schwarzen Feld landet,
     # setzen wir sie wieder zurück und drehen sie dafür.
@@ -212,11 +218,12 @@ def doStep():
         player_Sprite_direction += 2
         if player_Sprite_direction > 4 :
             player_Sprite_direction -= 4
-    elif getPixelColorAheadStr(CELLSIZE) == "#000001":
-        drawImage("{}/sprites/white.png".format(wd))
-        action_cell()
     else:
         fd(CELLSIZE)
+    
+    if pos in action_cells:
+        action_cell(pos)
+
 
     if player_Sprite_direction == 1 :
 
@@ -354,21 +361,34 @@ def onClick(x, y):
 
         setPos(turtle_x, turtle_y)
 #definition Aktions/Fragezeichenfelder
-def action_cell() :
-    r = randint(1, 3)
+def action_cell(pos) :
+    r = randint(1, 1)
     drawImage("{}/sprites/white.png".format(wd))
     if r == 1 :
-        fd(CELLSIZE * 2)
+        doStep()
     elif r == 2:
         sleep_multiplier = 0.1
     elif r == 3:
-        setPos((randint(1, 10))*40, (randint(1, 10))*40)
-
+        setPos((randint(-9, 9))*40, (randint(-9, 9))*40)
+    remove_action_cell(pos)
+        
+def remove_action_cell(pos):
+    try:
+        action_cells.remove(pos)
+    except:
+        pass
+    
 #definition plazierung der Aktions/Fragezeichenfelder
 def draw_action_cells() :
+    h = heading()
+    setHeading(0)
     for i in range (3 * difficulty) :
-        setPos((randint(-10, 10))*40, (randint(-10, 10))*40)
+        x = (randint(-9, 9))*40
+        y = (randint(-9, 9))*40
+        setPos(x, y)
         drawImage("{}/sprites/action_sprite.png".format(wd))
+        action_cells.append([x, y])
+    setHeading(h)
 #definition startbildschirm
 def start_screen():
     clear()
@@ -499,7 +519,7 @@ while game_loop:
     pprob.check_catch()
     doStep()
     pprob.check_catch()
-    sleep(0.7 - 0.2 * difficulty)
+    sleep(0.7 - 0.2 * difficulty * sleep_multiplier)
     setFillColor("white")
 
     drawImage("{}/sprites/white.png".format(wd))
