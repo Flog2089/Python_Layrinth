@@ -355,16 +355,21 @@ def onClick(x, y):
 
         setPos(turtle_x, turtle_y)
 #definition Aktions/Fragezeichenfelder
-def action_cell(pos) :
-    r = randint(1, 1)
+def action_cell(pos):
+    global a
+    global sleep_multiplier
+    global b
+    r = randint(1, 3)
     drawImage("{}/sprites/white.png".format(wd))
     if r == 1 :
         doStep()
     elif r == 2:
-        sleep_multiplier = 0.1
+        sleep_multiplier = 0.3
+        b = a
     elif r == 3:
         setPos((randint(-9, 9))*40, (randint(-9, 9))*40)
     remove_action_cell(pos)
+    
         
 def remove_action_cell(pos):
     try:
@@ -502,6 +507,7 @@ draw_border()
 setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
 penUp()
 showTurtle()
+b = 0
 while game_loop:
 
     a += 1
@@ -526,6 +532,9 @@ while game_loop:
         change_color_orientation("black")
 
 
+    
+    if a - 5 == b:
+        sleep_multiplier = 1
 
 save_score(a, save_slot)
 read_score(save_slot)
