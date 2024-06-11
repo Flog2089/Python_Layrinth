@@ -433,8 +433,28 @@ def draw_action_cells() :
         drawImage("{}/sprites/action_sprite.png".format(wd))
         action_cells.append([x, y])
     setHeading(h)
-#definition startbildschirm
+
 def start_screen():
+    clear(bgcolor)
+    setPos(0, 350)
+    setPenColor("#000000")
+    setFont("papyrus", Font.PLAIN, 45)
+    label("Welcome to the turtle layrinth", adjust = "c")
+
+
+def save_slot_selection():
+    clear(bgcolor)
+    setPos(0, 400)
+    setPenColor("black")
+    setFontSize(60)
+    label("Select your save slot:", adjust = "c")
+    slot1_button = SaveSlotButton(0, 250, 250, 150, "#00AAAA", "Slot 1", 1, 10, "#008A8A", 20)
+    slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
+    slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
+    apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
+
+#definition startbildschirm
+def difficulty_selection():
     clear()
     hideTurtle()
     home()
@@ -483,18 +503,7 @@ def start_screen():
     hard_button = DifficultyButton(250, -50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
   
     apply_button = ApplyDifficultyButton(0, -250, 400, 100, "#BB77BB", "Apply" , 20)
-
-
-def save_slot_selection():
-    clear(bgcolor)
-    setPos(0, 400)
-    setPenColor("black")
-    setFontSize(60)
-    label("Select your save slot:", adjust = "c")
-    slot1_button = SaveSlotButton(0, 250, 250, 150, "#00AAAA", "Slot 1", 1, 10, "#008A8A", 20)
-    slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
-    slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
-    apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
+    
 
 def read_score(save_slot):
     global hi_score
@@ -530,69 +539,90 @@ def change_color_orientation(color):
 
         setPos(pos)
 
-save_slot_selection()
 
-while not slot_selected:
-    pass
+# DA CODE STARTS RUNNING HERE
+game_running = True
 
-for button in SaveSlotButton.save_slot_buttons:
-    button.destroy()
+while True:
+    start_screen()
     
-start_screen()
-
-while not difficulty_selected:
-    pass
-
-for button in Button.buttons:
-    button.destroy()
-
-game_loop = True
-
-a = 1
-read_score(save_slot)
-clear()
-showTurtle()
-drawGrid()
-draw_border()
-# An dieser Stelle könntest du ein Feld als Ziel färben.
-# Die Turtle auf ein Anfangsfeld setzen:
-setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
-penUp()
-showTurtle()
-b = 0
-while game_loop:
-
-    a += 1
-    ht()
-
-    if a % 2 == 0:
-        pprob.clear_shadow()
-        pprob.advance()
-    pprob.check_catch()
-    doStep()
-    pprob.check_catch()
-    sleep(0.7 - 0.2 * difficulty * sleep_multiplier)
-    setFillColor("white")
-
-    drawImage("{}/sprites/white.png".format(wd))
-    key = getKey()
-    if key == "a":
-        dir_right = False
-        change_color_orientation("green")
-    elif key == "d":
-        dir_right = True
-        change_color_orientation("black")
-
-
+    while not game_running:
+        pass
     
-    if a - 5 == b:
-        sleep_multiplier = 1
-
-save_score(a, save_slot)
-read_score(save_slot)
-
-
-
-
-
-
+    while game_running:
+        save_slot_selection()
+        
+        
+        while not slot_selected:
+            if not game_running:
+                continue
+                
+        while slot_selected:
+            for button in SaveSlotButton.save_slot_buttons:
+                button.destroy()
+                
+            difficulty_selection()
+            
+            while not difficulty_selected:
+                if not slot_selected:
+                    continue
+            
+            while difficulty_selected:
+                for button in Button.buttons:
+                    button.destroy()
+                
+                
+                game_loop = True
+                player_Sprite_direction = 1
+                a = 1
+                read_score(save_slot)
+                clear()
+                showTurtle()
+                drawGrid()
+                draw_border()
+                # An dieser Stelle könntest du ein Feld als Ziel färben.
+                # Die Turtle auf ein Anfangsfeld setzen:
+                setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
+                penUp()
+                showTurtle()
+                setHeading(90)
+                b = 0
+                pprob.pos = [80, 80]
+                while game_loop:
+                
+                    a += 1
+                    ht()
+                
+                    if a % 2 == 0:
+                        pprob.clear_shadow()
+                        pprob.advance()
+                    pprob.check_catch()
+                    doStep()
+                    pprob.check_catch()
+                    sleep(0.7 - 0.2 * difficulty * sleep_multiplier)
+                    setFillColor("white")
+                
+                    drawImage("{}/sprites/white.png".format(wd))
+                    key = getKey()
+                    if key == "a":
+                        dir_right = False
+                        change_color_orientation("green")
+                    elif key == "d":
+                        dir_right = True
+                        change_color_orientation("black")
+                
+                
+                    
+                    if a - 5 == b:
+                        sleep_multiplier = 1
+                        
+                
+                difficulty_selected = False
+                save_score(a, save_slot)
+                read_score(save_slot)
+                
+                               
+        
+    
+    
+    
