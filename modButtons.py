@@ -13,7 +13,7 @@ class Button(object):
         
         hideTurtle()
         setPenWidth(3)
-        setPenColor("black")
+        setPenColor(self.color)
         setFillColor(self.color)
         
         self.buttons.append(self)
@@ -38,6 +38,7 @@ class Button(object):
         pu()
         bk(self.height / 2)
         fill()
+        
         label(self.text, adjust = "c")
         
     def rounded_make(self):
@@ -66,6 +67,7 @@ class Button(object):
         pu()
         bk(self.height / 2)
         fill()
+        setPenColor("black")
         label(self.text, adjust = "c")
         
     def destroy(self):

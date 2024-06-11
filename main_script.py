@@ -17,6 +17,7 @@ save_slot = 1
 sleep_multiplier = 1
 
 slot_selected = False
+difficulty_selected = False
 dir_right = True
 block_loc = []
 
@@ -38,59 +39,29 @@ bgcolor = "#88AABF"
 setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
 
 
-#class DifficultyButton() mit class Button als parent
-class DifficultyButton(Button):
-    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
-    def __init__(self, posX, posY, width, height, color, text, difficulty, radius):
-        self.difficulty = difficulty
-        super(DifficultyButton, self).__init__(posX, posY, width, height, color, text, radius)
 
-    #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
-    def click_action(self):
-        global difficulty
-        global game_loop
-        difficulty = self.difficulty
-        game_loop = True
 
-class SaveSlotButton(Button):
-    save_slot_buttons = []
+class SlotButton(Button):
+    slot_buttons = []
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
-    def __init__(self, posX, posY, width, height, color, text, slot, border, border_color, radius):
-        self.slot = slot
+    def __init__(self, posX, posY, width, height, color, text, border, border_color, radius):
         self.border = border
         self.border_color = border_color
         self.toggle = False
-        self.save_slot_buttons.append(self)
-        self.saved_score = read_score_return(self.slot)
-        self.saved_text = "High Score: " + str(self.saved_score)
-        super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text, radius)
-        self.make_on_top()
-
-
-    def make_on_top(self):
-        bk(self.height / 3.3)
-        setFontSize(19)
-        label(self.saved_text, adjust = "c")
+        self.slot_buttons.append(self)
+        super(SlotButton, self).__init__(posX, posY, width, height, color, text, radius)
         
 
     @classmethod
-    def unclick(cls):
-        global save_slot
-        for b in cls.save_slot_buttons:
-            if b.slot != save_slot:
-                setPos(b.posX, b.posY)
-                fd(b.border * 0.5)
-                setFillColor(bgcolor)
-                fill()
-                bk(b.border * 0.5)
-                b.toggle = False
+    def unclick(cls, var_to_use = None):
+        pass
 
     #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
     def click_action(self):
-        global save_slot
-        
-        
-        save_slot = self.slot
+        draw_removable_border()
+        SlotButton.unclick()
+
+    def draw_removable_border(self):
         setPenColor(self.border_color)
         setPenWidth(self.border)
         setHeading(0)
@@ -118,9 +89,44 @@ class SaveSlotButton(Button):
         rt(90)
         pu()
         bk(self.height / 2)
+        
+    
+class SaveSlotButton(SlotButton):
+    save_slot_buttons = []
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, slot, border, border_color, radius):
+        self.slot = slot
+        self.save_slot_buttons.append(self)
+        self.saved_score = read_score_return(self.slot)
+        self.saved_text = "High Score: " + str(self.saved_score)
+        super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text, border, border_color, radius)
+        self.make_on_top()
+
+
+    def make_on_top(self):
+        bk(self.height / 3.3)
+        setFontSize(19)
+        label(self.saved_text, adjust = "c")
+        
+
+    @classmethod
+    def unclick(cls):
+        global save_slot
+        for b in cls.save_slot_buttons:
+            if b.slot != save_slot:
+                setPos(b.posX, b.posY)
+                fd(b.border * 0.5)
+                setFillColor(bgcolor)
+                fill()
+                bk(b.border * 0.5)
+                b.toggle = False
+
+    #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
+    def click_action(self):
+        global save_slot
+        save_slot = self.slot
+        super(SaveSlotButton, self).draw_removable_border()
         SaveSlotButton.unclick()
-
-
 
 class ApplySlotButton(Button):
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
@@ -132,6 +138,44 @@ class ApplySlotButton(Button):
         global slot_selected
         slot_selected = True
 
+#class DifficultyButton() mit class Button als parent
+class DifficultyButton(SlotButton):
+    difficulty_buttons = []
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, inner_difficulty, border, border_color, radius):
+        self.difficulty = inner_difficulty
+        self.difficulty_buttons.append(self)
+        super(DifficultyButton, self).__init__(posX, posY, width, height, color, text, border, border_color, radius)
+        
+
+    @classmethod
+    def unclick(cls):
+        global difficulty
+        for b in cls.difficulty_buttons:
+            if b.difficulty != difficulty:
+                setPos(b.posX, b.posY)
+                fd(b.border * 0.5)
+                setFillColor(bgcolor)
+                fill()
+                bk(b.border * 0.5)
+                b.toggle = False
+
+    #eigene definition für aktion wenn geclickt wird (startet spiel und setzt difficulty auf self.difficulty)
+    def click_action(self):
+        global difficulty
+        difficulty = self.difficulty
+        super(DifficultyButton, self).draw_removable_border()
+        DifficultyButton.unclick()
+
+class ApplyDifficultyButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, radius):
+        super(ApplyDifficultyButton, self).__init__(posX, posY, width, height, color, text, radius)
+
+
+    def click_action(self):
+        global difficulty_selected
+        difficulty_selected = True
 
 
 class Enemy:
@@ -283,6 +327,7 @@ def doStep():
 # Zeichnet das Grundgitter:
 def drawGrid():
     global CELLSIZE
+    setPenWidth(3)
     CELLSIZE = 40
     hideTurtle()
     pd()
@@ -425,18 +470,19 @@ def start_screen():
     back(30)
 
     #macht drei knöpfe (s.o.)
-    setPos(0, -100)
+    setPos(0, 00)
     setPenColor("black")
     label("Select difficulty:", adjust = "c")
 
-    easy_button = DifficultyButton(-250, -200, 200, 100, "green", "Easy", 1, 20)
+    easy_button = DifficultyButton(-250, -50, 200, 100, "green", "Easy", 1, 10, "dark green", 20)
 
 
-    medium_button = DifficultyButton(0, -200, 200, 100, "yellow", "Medium", 2, 20)
+    medium_button = DifficultyButton(0, -50, 200, 100, "yellow", "Medium", 2, 10, "orange", 20)
 
 
-    hard_button = DifficultyButton(250, -200, 200, 100, "red", "Hard", 3, 20)
+    hard_button = DifficultyButton(250, -50, 200, 100, "red", "Hard", 3, 10, "dark red", 20)
   
+    apply_button = ApplyDifficultyButton(0, -250, 400, 100, "blue", "Apply" , 20)
 
 
 def save_slot_selection():
@@ -489,12 +535,18 @@ save_slot_selection()
 while not slot_selected:
     pass
 
+for button in SaveSlotButton.save_slot_buttons:
+    button.destroy()
+    
 start_screen()
 
-while not game_loop:
+while not difficulty_selected:
     pass
+
 for button in Button.buttons:
     button.destroy()
+
+game_loop = True
 
 a = 1
 read_score(save_slot)
