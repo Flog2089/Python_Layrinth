@@ -474,15 +474,15 @@ def start_screen():
     setPenColor("black")
     label("Select difficulty:", adjust = "c")
 
-    easy_button = DifficultyButton(-250, -50, 200, 100, "green", "Easy", 1, 10, "dark green", 20)
+    easy_button = DifficultyButton(-250, -50, 200, 100, "#36802D", "Easy", 1, 10, "#16600D", 20)
 
 
-    medium_button = DifficultyButton(0, -50, 200, 100, "yellow", "Medium", 2, 10, "orange", 20)
+    medium_button = DifficultyButton(0, -50, 200, 100, "#FFBF00", "Medium", 2, 10, "orange", 20)
 
 
-    hard_button = DifficultyButton(250, -50, 200, 100, "red", "Hard", 3, 10, "dark red", 20)
+    hard_button = DifficultyButton(250, -50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
   
-    apply_button = ApplyDifficultyButton(0, -250, 400, 100, "blue", "Apply" , 20)
+    apply_button = ApplyDifficultyButton(0, -250, 400, 100, "#BB77BB", "Apply" , 20)
 
 
 def save_slot_selection():
@@ -491,10 +491,10 @@ def save_slot_selection():
     setPenColor("black")
     setFontSize(60)
     label("Select your save slot:", adjust = "c")
-    slot1_button = SaveSlotButton(0, 300, 200, 100, "red", "slot 1", 1, 10, "dark red", 20)
-    slot2_button = SaveSlotButton(0, 0, 200, 100, "red", "slot 2", 2, 10, "dark red", 20)
-    slot3_button = SaveSlotButton(0, -300, 200, 100, "red", "slot 3", 3, 10, "dark red", 20)
-    apply_button = ApplySlotButton(330, -300, 150, 100, "blue", "apply", 30)
+    slot1_button = SaveSlotButton(0, 250, 250, 150, "#00AAAA", "Slot 1", 1, 10, "#008A8A", 20)
+    slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
+    slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
+    apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
 
 def read_score(save_slot):
     global hi_score
