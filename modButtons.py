@@ -71,7 +71,10 @@ class Button(object):
         label(self.text, adjust = "c")
         
     def destroy(self):
-        self.is_working = False    
+        self.is_working = False
+        
+    def undestroy(self):
+        self.is_working = False
 
     @classmethod
     def handle_click(cls, x, y):

@@ -177,6 +177,24 @@ class ApplyDifficultyButton(Button):
         global difficulty_selected
         difficulty_selected = True
 
+class BackButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, radius, var):
+        self.var = var
+        super(BackButton, self).__init__(posX, posY, width, height, color, text, radius)
+
+
+    def click_action(self):
+        global difficulty_selected
+        global slot_selected
+        global game_running
+        if self.var == "difficulty_screen":
+            slot_selected = False
+
+        elif self.var == "slot_screen":
+            game_running = False
+            
+
 
 class Enemy:
     def __init__(self, color, difficulty, name, sprite, posX, posY):
@@ -453,6 +471,7 @@ def save_slot_selection():
     slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
     slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
     apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
+    slot_back_button = BackButton(-400, 400, 100, 100, "#CCCCCC", "<--", 10, "slot_screen")
 
 #definition startbildschirm
 def difficulty_selection():
@@ -496,14 +515,10 @@ def difficulty_selection():
     label("Select difficulty:", adjust = "c")
 
     easy_button = DifficultyButton(-250, -50, 200, 100, "#36802D", "Easy", 1, 10, "#16600D", 20)
-
-
     medium_button = DifficultyButton(0, -50, 200, 100, "#FFBF00", "Medium", 2, 10, "orange", 20)
-
-
     hard_button = DifficultyButton(250, -50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
-  
     apply_button = ApplyDifficultyButton(0, -250, 400, 100, "#BB77BB", "Apply" , 20)
+    difficulty_back_button = BackButton(-400, 400, 100, 100, "#CCCCCC", "<--", 10, "difficulty_screen")
     
 
 def read_score(save_slot):
@@ -545,28 +560,30 @@ def change_color_orientation(color):
 game_running = True
 
 while True:
+    sleep(0.1)
     start_screen()
     
     while not game_running:
         pass
     
     while game_running:
+        sleep(0.1)
         save_slot_selection()
         
         
         while not slot_selected:
             if not game_running:
-                continue
+                break
                 
         while slot_selected:
-            for button in SaveSlotButton.save_slot_buttons:
+            for button in Button.buttons:
                 button.destroy()
                 
             difficulty_selection()
             
             while not difficulty_selected:
                 if not slot_selected:
-                    continue
+                    break
             
             while difficulty_selected:
                 for button in Button.buttons:
