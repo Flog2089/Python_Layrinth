@@ -194,6 +194,23 @@ class BackButton(Button):
         elif self.var == "slot_screen":
             game_running = False
             
+class PlayButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, radius):
+        super(PlayButton, self).__init__(posX, posY, width, height, color, text, radius)
+        self.make_arrow()
+
+
+    def click_action(self):
+        global game_running
+        game_running = True
+        print("game")
+    
+    def make_arrow(self):
+        
+        setPos(self.posX, self.posY - self.height / 2)
+        drawImage("{}/sprites/start_arrow.png".format(wd))
+
 
 
 class Enemy:
@@ -452,6 +469,8 @@ def draw_action_cells() :
         action_cells.append([x, y])
     setHeading(h)
 
+
+
 def start_screen():
     clear(bgcolor)
     setPos(0, 350)
@@ -459,6 +478,8 @@ def start_screen():
     setFont("papyrus", Font.PLAIN, 45)
     label("Welcome to the turtle layrinth", adjust = "c")
     setFont("sans serif", Font.PLAIN, 24)
+    
+    start_button = PlayButton(0, 75, 150, 150, "green", " ", 30)
 
 
 def save_slot_selection():
@@ -557,7 +578,7 @@ def change_color_orientation(color):
 
 
 # DA CODE STARTS RUNNING HERE
-game_running = True
+game_running = False
 
 while True:
     sleep(0.1)
@@ -573,6 +594,8 @@ while True:
         
         while not slot_selected:
             if not game_running:
+                for button in Button.buttons:
+                    button.destroy()
                 break
                 
         while slot_selected:
@@ -583,6 +606,8 @@ while True:
             
             while not difficulty_selected:
                 if not slot_selected:
+                    for button in Button.buttons:
+                        button.destroy()
                     break
             
             while difficulty_selected:
