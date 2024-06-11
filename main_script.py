@@ -440,6 +440,7 @@ def start_screen():
     setPenColor("#000000")
     setFont("papyrus", Font.PLAIN, 45)
     label("Welcome to the turtle layrinth", adjust = "c")
+    setFont("sans serif", Font.PLAIN, 24)
 
 
 def save_slot_selection():
