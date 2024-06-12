@@ -492,14 +492,14 @@ def save_slot_selection():
     slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
     slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
     apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
-    slot_back_button = BackButton(-400, 400, 100, 100, "#CCCCCC", "<--", 10, "slot_screen")
+    slot_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "slot_screen")
 
 def hidden_text():
     setPenColor("black")
     penUp()
-    setPos(0, 330)
+    setPos(0, 430)
     
-    #code für platzhalter text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
+    #code text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
     label("Greetings, esteemed player!", adjust = "c")
     back(30)
     label("To ensure a smooth and delightful experience,", adjust = "c")
@@ -518,6 +518,9 @@ def hidden_text():
     back(30)
     label("We value your patience and enthusiasm!", adjust = "c")
     back(30)
+    
+    setPos(400, 400)
+    drawImage("{}/sprites/smol_rick.png".format(wd))
 
 #definition startbildschirm
 def difficulty_selection():
@@ -533,15 +536,15 @@ def difficulty_selection():
     
 
     #macht drei knöpfe (s.o.)
-    setPos(0, 00)
+    setPos(0, 100)
     setPenColor("black")
     label("Select difficulty:", adjust = "c")
 
-    easy_button = DifficultyButton(-250, -50, 200, 100, "#36802D", "Easy", 1, 10, "#16600D", 20)
-    medium_button = DifficultyButton(0, -50, 200, 100, "#FFBF00", "Medium", 2, 10, "orange", 20)
-    hard_button = DifficultyButton(250, -50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
-    apply_button = ApplyDifficultyButton(0, -250, 400, 100, "#BB77BB", "Apply" , 20)
-    difficulty_back_button = BackButton(-400, 400, 100, 100, "#CCCCCC", "<--", 10, "difficulty_screen")
+    easy_button = DifficultyButton(-250, 50, 200, 100, "#36802D", "Easy", 1, 10, "#16600D", 20)
+    medium_button = DifficultyButton(0, 50, 200, 100, "#FFBF00", "Medium", 2, 10, "orange", 20)
+    hard_button = DifficultyButton(250, 50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
+    apply_button = ApplyDifficultyButton(0, -150, 400, 100, "#BB77BB", "Apply" , 20)
+    difficulty_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "difficulty_screen")
     
 
 def read_score(save_slot):
@@ -607,8 +610,15 @@ while True:
             difficulty_selection()
             
             while not difficulty_selected:
-                if getKey() == "a":
-                    hidden_text()
+                if getKeyWait() == "p":
+                    if getKeyWait() == "a":
+                        if getKeyWait() == "i":
+                            if getKeyWait() == "n":
+                                hidden_text()
+                                
+                if getKeyWait() == "u":
+                    difficulty_selection()
+                    
                 if not slot_selected:
                     for button in Button.buttons:
                         button.destroy()
