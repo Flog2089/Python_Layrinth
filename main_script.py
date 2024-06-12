@@ -285,6 +285,8 @@ class Enemy:
 pprob = Enemy(1, 1, 1, "enemy_sprite", 80, 80)
 
 
+
+
 def doStep():
     global player_Sprite_direction
     global player_Sprite
@@ -518,9 +520,24 @@ def credits_screen():
     ht()
     credits_back_buttons = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "credits_screen")
     
-        label("Flog - Sprites erstellt, animierter Spieler, Action Cells", adjust = "c")
+    setPos(0, 380)
+    setFontSize(60)
+    label("Credits:", adjust = "c")    
+    
+    setFontSize(25)
+    setPos(0, 270)
+    label("Flog - alle Sprites von Hand erstellt, Spieler Frame für Frame animiert, ", adjust = "c")
+    setPos(0, 240)
+    label("Action Cells für mehr Dynamik eingebaut.", adjust = "c")
+    
+    setPos(0, 190)
+    label("Doman - Menüsystem von null auf genestet, sich mit dem blauen Rand abgemüht,", adjust = "c")
+    setPos(0, 160)
+    label("den Gegner (pprob) ins Leben gerufen, Blöcke Farben wechseln lassen", adjust = "c")
+    
+    setPos(0, 110)
+    label("ChatGPT - genervt, weil es Anweisungen nicht verstanden hat", adjust = "c")
 
-    ######@flog bitte hier die labels mit credits einfügen falls du das machen kannst
     
 
 def hidden_text():
