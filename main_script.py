@@ -518,7 +518,7 @@ def credits_screen():
     ht()
     credits_back_buttons = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "credits_screen")
     
-    
+        label("Flog - Sprites erstellt, animierter Spieler, Action Cells", adjust = "c")
 
     ######@flog bitte hier die labels mit credits einfügen falls du das machen kannst
     
