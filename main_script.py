@@ -517,7 +517,6 @@ def credits_screen():
     clean(bgcolor)
     ht()
     credits_back_buttons = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "credits_screen")
-    print("dumm")
     
 
 def hidden_text():
@@ -639,7 +638,6 @@ while True:
             button.destroy()
             
         credits_screen()
-        print(credits_selected)
         while not credits_selected:
             if not game_running:
                 for button in Button.buttons:
