@@ -208,7 +208,7 @@ class PlayButton(Button):
     
     def make_arrow(self):
         
-        setPos(self.posX, self.posY - self.height / 2)
+        setPos(self.posX - 7, self.posY - self.height / 2)
         drawImage("{}/sprites/start_arrow.png".format(wd))
 
 
