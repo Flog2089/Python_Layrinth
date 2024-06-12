@@ -610,13 +610,13 @@ while True:
             difficulty_selection()
             
             while not difficulty_selected:
-                if getKeyWait() == "p":
+                if getKey() == "p":
                     if getKeyWait() == "a":
                         if getKeyWait() == "i":
                             if getKeyWait() == "n":
                                 hidden_text()
                                 
-                if getKeyWait() == "u":
+                if getKey() == "u":
                     difficulty_selection()
                     
                 if not slot_selected:
