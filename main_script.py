@@ -494,22 +494,11 @@ def save_slot_selection():
     apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
     slot_back_button = BackButton(-400, 400, 100, 100, "#CCCCCC", "<--", 10, "slot_screen")
 
-#definition startbildschirm
-def difficulty_selection():
-    clear()
-    hideTurtle()
-    home()
-    setHeading(0)
-    
-    
-        
-
-    #füllt alles mit einem angenehmen 777777 grau aus
+def hidden_text():
     setPenColor("black")
     penUp()
     setPos(0, 330)
-    clean(bgcolor)
-
+    
     #code für platzhalter text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
     label("Greetings, esteemed player!", adjust = "c")
     back(30)
@@ -529,6 +518,19 @@ def difficulty_selection():
     back(30)
     label("We value your patience and enthusiasm!", adjust = "c")
     back(30)
+
+#definition startbildschirm
+def difficulty_selection():
+    clean(bgcolor)
+    hideTurtle()
+    home()
+    setHeading(0)
+    
+    
+        
+
+    #füllt alles mit einem angenehmen 777777 grau aus
+    
 
     #macht drei knöpfe (s.o.)
     setPos(0, 00)
@@ -605,6 +607,8 @@ while True:
             difficulty_selection()
             
             while not difficulty_selected:
+                if getKey() == "a":
+                    hidden_text()
                 if not slot_selected:
                     for button in Button.buttons:
                         button.destroy()
