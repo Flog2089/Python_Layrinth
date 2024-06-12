@@ -2,7 +2,7 @@
 from gturtle import *
 from time import sleep
 from sys import exit
-from random import randint
+from random import *
 import os
 from modButtons import Button
 
@@ -475,8 +475,8 @@ def start_screen():
     clear(bgcolor)
     setPos(0, 350)
     setPenColor("#000000")
-    setFont("papyrus", Font.PLAIN, 45)
-    label("Welcome to the turtle layrinth", adjust = "c")
+    setFont("papyrus", Font.PLAIN, 65)
+    label("Welcome to the turtle layrinth?", adjust = "c")
     setFont("sans serif", Font.PLAIN, 24)
     
     start_button = PlayButton(0, 75, 150, 150, "green", " ", 30)
@@ -586,14 +586,29 @@ def change_color_orientation(color):
 game_running = False
 
 while True:
-    sleep(0.1)
-    start_screen()
     
+    start_screen()
     while not game_running:
-        pass
+        arand = randint(0, 3)
+        setColor(choice(["red", "blue", "yellow", "green"])) 
+        if arand == 0:
+            setPos(600, randint(-300, 300))
+        elif arand == 1:
+            setPos(-600, randint(-300, 300))
+        elif arand == 2:
+            setPos(randint(-300, 300), 600)
+        elif arand == 3:
+            setPos(randint(-300, 300), -600)
+        setHeading(towards(0 + randint(-400, 400), 0 - randint(-400, 400)))
+        st()
+        counter = 0
+        while not game_running:
+            counter += 1
+            fd(8)
+            if counter == 200:
+                break
     
     while game_running:
-        sleep(0.1)
         save_slot_selection()
         
         
