@@ -2,7 +2,7 @@
 from gturtle import *
 from time import sleep
 from sys import exit
-from random import randint
+from random import *
 import os
 from modButtons import Button
 
@@ -18,6 +18,7 @@ sleep_multiplier = 1
 
 slot_selected = False
 difficulty_selected = False
+credits_selected = False
 dir_right = True
 block_loc = []
 
@@ -176,6 +177,58 @@ class ApplyDifficultyButton(Button):
     def click_action(self):
         global difficulty_selected
         difficulty_selected = True
+
+class BackButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, radius, var):
+        self.var = var
+        super(BackButton, self).__init__(posX, posY, width, height, color, text, radius)
+
+
+    def click_action(self):
+        global difficulty_selected
+        global slot_selected
+        global game_running
+        global credits_selected
+        if self.var == "difficulty_screen":
+            slot_selected = False
+            
+
+        elif self.var == "slot_screen":
+            game_running = False
+            credits_selected = False
+        elif self.var == "credits_screen":
+            game_running = False
+            
+class PlayButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, radius):
+        super(PlayButton, self).__init__(posX, posY, width, height, color, text, radius)
+        self.make_arrow()
+
+
+    def click_action(self):
+        global game_running
+        global credits_selected
+        credits_selected = True
+        game_running = True
+    
+    def make_arrow(self):
+        
+        setPos(self.posX - 7, self.posY - self.height / 2)
+        drawImage("{}/sprites/start_arrow.png".format(wd))
+
+class CreditsButton(Button):
+    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    def __init__(self, posX, posY, width, height, color, text, radius):
+        super(CreditsButton, self).__init__(posX, posY, width, height, color, text, radius)
+
+
+    def click_action(self):
+        global game_running
+        game_running = True
+
+
 
 
 class Enemy:
@@ -433,23 +486,46 @@ def draw_action_cells() :
         drawImage("{}/sprites/action_sprite.png".format(wd))
         action_cells.append([x, y])
     setHeading(h)
-#definition startbildschirm
-def start_screen():
-    clear()
-    hideTurtle()
-    home()
-    setHeading(0)
-    
-    
-        
 
-    #füllt alles mit einem angenehmen 777777 grau aus
+
+
+def start_screen():
+    clear(bgcolor)
+    setPos(0, 350)
+    setPenColor("#000000")
+    setFont("papyrus", Font.PLAIN, 65)
+    label("Welcome to the turtle layrinth?", adjust = "c")
+    setFont("sans serif", Font.PLAIN, 24)
+    
+    start_button = PlayButton(0, 75, 150, 150, "green", " ", 30)
+    credits_button = CreditsButton(0, -350, 200, 50, "red", "credits", 10)
+
+
+def save_slot_selection():
+    clear(bgcolor)
+    setPos(0, 400)
+    setPenColor("black")
+    setFontSize(60)
+    label("Select your save slot:", adjust = "c")
+    slot1_button = SaveSlotButton(0, 250, 250, 150, "#00AAAA", "Slot 1", 1, 10, "#008A8A", 20)
+    slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
+    slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
+    apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
+    slot_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "slot_screen")
+    
+def credits_screen():
+    clean(bgcolor)
+    ht()
+    credits_back_buttons = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "credits_screen")
+    print("dumm")
+    
+
+def hidden_text():
     setPenColor("black")
     penUp()
-    setPos(0, 330)
-    clean(bgcolor)
-
-    #code für platzhalter text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
+    setPos(0, 430)
+    
+    #code text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
     label("Greetings, esteemed player!", adjust = "c")
     back(30)
     label("To ensure a smooth and delightful experience,", adjust = "c")
@@ -468,33 +544,34 @@ def start_screen():
     back(30)
     label("We value your patience and enthusiasm!", adjust = "c")
     back(30)
+    
+    setPos(400, 400)
+    drawImage("{}/sprites/smol_rick.png".format(wd))
+
+#definition startbildschirm
+def difficulty_selection():
+    clean(bgcolor)
+    hideTurtle()
+    home()
+    setHeading(0)
+    
+    
+        
+
+    #füllt alles mit einem angenehmen 777777 grau aus
+    
 
     #macht drei knöpfe (s.o.)
-    setPos(0, 00)
+    setPos(0, 100)
     setPenColor("black")
     label("Select difficulty:", adjust = "c")
 
-    easy_button = DifficultyButton(-250, -50, 200, 100, "#36802D", "Easy", 1, 10, "#16600D", 20)
-
-
-    medium_button = DifficultyButton(0, -50, 200, 100, "#FFBF00", "Medium", 2, 10, "orange", 20)
-
-
-    hard_button = DifficultyButton(250, -50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
-  
-    apply_button = ApplyDifficultyButton(0, -250, 400, 100, "#BB77BB", "Apply" , 20)
-
-
-def save_slot_selection():
-    clear(bgcolor)
-    setPos(0, 400)
-    setPenColor("black")
-    setFontSize(60)
-    label("Select your save slot:", adjust = "c")
-    slot1_button = SaveSlotButton(0, 250, 250, 150, "#00AAAA", "Slot 1", 1, 10, "#008A8A", 20)
-    slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
-    slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
-    apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
+    easy_button = DifficultyButton(-250, 50, 200, 100, "#36802D", "Easy", 1, 10, "#16600D", 20)
+    medium_button = DifficultyButton(0, 50, 200, 100, "#FFBF00", "Medium", 2, 10, "orange", 20)
+    hard_button = DifficultyButton(250, 50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
+    apply_button = ApplyDifficultyButton(0, -150, 400, 100, "#BB77BB", "Apply" , 20)
+    difficulty_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "difficulty_screen")
+    
 
 def read_score(save_slot):
     global hi_score
@@ -530,69 +607,133 @@ def change_color_orientation(color):
 
         setPos(pos)
 
-save_slot_selection()
 
-while not slot_selected:
-    pass
+# DA CODE STARTS RUNNING HERE
+game_running = False
 
-for button in SaveSlotButton.save_slot_buttons:
-    button.destroy()
+while True:
     
-start_screen()
-
-while not difficulty_selected:
-    pass
-
-for button in Button.buttons:
-    button.destroy()
-
-game_loop = True
-
-a = 1
-read_score(save_slot)
-clear()
-showTurtle()
-drawGrid()
-draw_border()
-# An dieser Stelle könntest du ein Feld als Ziel färben.
-# Die Turtle auf ein Anfangsfeld setzen:
-setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
-penUp()
-showTurtle()
-b = 0
-while game_loop:
-
-    a += 1
-    ht()
-
-    if a % 2 == 0:
-        pprob.clear_shadow()
-        pprob.advance()
-    pprob.check_catch()
-    doStep()
-    pprob.check_catch()
-    sleep(0.7 - 0.2 * difficulty * sleep_multiplier)
-    setFillColor("white")
-
-    drawImage("{}/sprites/white.png".format(wd))
-    key = getKey()
-    if key == "a":
-        dir_right = False
-        change_color_orientation("green")
-    elif key == "d":
-        dir_right = True
-        change_color_orientation("black")
-
-
+    start_screen()
+    while not game_running:
+        arand = randint(0, 3)
+        setColor(choice(["red", "blue", "yellow", "green"])) 
+        if arand == 0:
+            setPos(600, randint(-300, 300))
+        elif arand == 1:
+            setPos(-600, randint(-300, 300))
+        elif arand == 2:
+            setPos(randint(-300, 300), 600)
+        elif arand == 3:
+            setPos(randint(-300, 300), -600)
+        setHeading(towards(0 + randint(-400, 400), 0 - randint(-400, 400)))
+        st()
+        counter = 0
+        while not game_running:
+            counter += 1
+            fd(8)
+            if counter == 200:
+                break
     
-    if a - 5 == b:
-        sleep_multiplier = 1
-
-save_score(a, save_slot)
-read_score(save_slot)
-
-
-
-
-
-
+    while game_running:
+        for button in Button.buttons:
+            button.destroy()
+            
+        credits_screen()
+        print(credits_selected)
+        while not credits_selected:
+            if not game_running:
+                for button in Button.buttons:
+                    button.destroy()
+                break
+                
+        while credits_selected:
+            
+            save_slot_selection()
+            
+            
+            while not slot_selected:
+                if not credits_selected:
+                    for button in Button.buttons:
+                        button.destroy()
+                    break
+                    
+            while slot_selected:
+                for button in Button.buttons:
+                    button.destroy()
+                    
+                difficulty_selection()
+                
+                while not difficulty_selected:
+                    if getKey() == "p":
+                        if getKeyWait() == "a":
+                            if getKeyWait() == "i":
+                                if getKeyWait() == "n":
+                                    hidden_text()
+                                    
+                    if getKey() == "u":
+                        difficulty_selection()
+                        
+                    if not slot_selected:
+                        for button in Button.buttons:
+                            button.destroy()
+                        break
+                
+                while difficulty_selected:
+                    for button in Button.buttons:
+                        button.destroy()
+                    
+                    
+                    game_loop = True
+                    player_Sprite_direction = 1
+                    a = 1
+                    read_score(save_slot)
+                    clear()
+                    showTurtle()
+                    drawGrid()
+                    draw_border()
+                    # An dieser Stelle könntest du ein Feld als Ziel färben.
+                    # Die Turtle auf ein Anfangsfeld setzen:
+                    setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
+                    penUp()
+                    showTurtle()
+                    setHeading(90)
+                    b = 0
+                    pprob.pos = [80, 80]
+                    while game_loop:
+                    
+                        a += 1
+                        ht()
+                    
+                        if a % 2 == 0:
+                            pprob.clear_shadow()
+                            pprob.advance()
+                        pprob.check_catch()
+                        doStep()
+                        pprob.check_catch()
+                        sleep(0.7 - 0.2 * difficulty * sleep_multiplier)
+                        setFillColor("white")
+                    
+                        drawImage("{}/sprites/white.png".format(wd))
+                        key = getKey()
+                        if key == "a":
+                            dir_right = False
+                            change_color_orientation("green")
+                        elif key == "d":
+                            dir_right = True
+                            change_color_orientation("black")
+                    
+                    
+                        
+                        if a - 5 == b:
+                            sleep_multiplier = 1
+                            
+                    
+                    difficulty_selected = False
+                    save_score(a, save_slot)
+                    read_score(save_slot)
+                
+                               
+        
+    
+    
+    
