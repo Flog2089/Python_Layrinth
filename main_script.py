@@ -334,6 +334,8 @@ class Enemy:
             remove_action_cell(self.pos)
         if self.pos in block_loc:
             block_loc.remove(self.pos)
+        if self.pos in death_blocks:
+            death_blocks.remove(self.pos)
             
         #setzt turtle zurück auf position des spielers
         setHeading(a)
@@ -623,6 +625,10 @@ def draw_action_cell() :
     
     x = (randint(-9, 9))*40
     y = (randint(-9, 9))*40
+    #solange ein kästchen mit diesen koordinaten, oder eine action cell mit diesen koordinaten existiert, wird ein neuer block generiert
+    while [x, y] in death_blocks or [x, y] in action_cells:
+        x = (randint(-9, 9))*40
+        y = (randint(-9, 9))*40
     setPos(x, y)
     drawImage("{}/sprites/action_sprite.png".format(wd))
     action_cells.append([x, y])
@@ -634,12 +640,12 @@ def draw_death_block():
     global death_blocks
     global action_cells
     #generieren von zufälliger x und y koodinate im raster
-    x = (randint(-9, 9))*40
-    y = (randint(-9, 9))*40
+    x = (randint(-11, 11))*40
+    y = (randint(-11, 11))*40
     #solange ein kästchen mit diesen koordinaten, oder eine action cell mit diesen koordinaten existiert, wird ein neuer block generiert
     while [x, y] in death_blocks or [x, y] in action_cells:
-        x = (randint(-10, 9))*40
-        y = (randint(-10, 9))*40
+        x = (randint(-11, 11))*40
+        y = (randint(-11, 11))*40
     
     turtlePos = getPos()
     setPos(x, y)
