@@ -11,6 +11,9 @@ Es gibt einen Gegner der dich verfolgt und den du nicht berühren darfst.
 Fragezeichenblöcke geben dir einen zufälligen effekt, der dich entweder verlangsammt, 2 Felder nach vorne boostet oder zufällig teleportiert.
 Ausserdem gibt es die Roten Todesblöcke, wenn man die berührt ist man Tot.
 
+Ausserdem funktioniert das Spiel nur bei 1080p(Full Hd) oder hochauflösenderen Monitoren
+
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
