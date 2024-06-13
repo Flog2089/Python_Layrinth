@@ -1,5 +1,9 @@
 from gturtle import *
 #erstellen von Ursprungs - Class von allen Buttons (alle zukünftigen Buttons werden (teilweise über mehrere Ecken) manche dieser properties, Funktionen, etc. vererben) 
+#bei weiteren fragen:
+# - https://www.w3schools.com/python/python_classes.asp
+# - https://www.w3schools.com/python/python_inheritance.asp
+# - https://stackoverflow.com/questions/38963018/typeerror-super-takes-at-least-1-argument-0-given-error-is-specific-to-any
 class Button(object):
     #die buttons class bekommt eine Liste (Buttons) zugewiesen, in der in Zukunft alle Buttons gespeichert werden
     buttons = []
@@ -86,7 +90,7 @@ class Button(object):
     def undestroy(self):
         self.is_working = False
 
-    #classmethod (eine Funktion, welche nicht mit einzelnen Objekten der Klasse, sondern mit der Klasse selbst assoziiert ist), welche durch die klasseneigene Liste durchgeht, und bei jedem Button in der liste checkt, ob dieser angeklickt wurde, wenn ja wird die click Action dieses Buttons ausgeführt
+    #classmethod (eine Funktion, welche nicht mit einzelnen Objekten der Klasse, sondern mit der Klasse selbst assoziiert ist), welche durch die klasseneigene Liste durchgeht, und bei jedem Button in der liste checkt, ob dieser angeklickt wurde, wenn ja wird die click Action dieses Buttons ausgeführt (classmethod konzept von chatgpt)
     @classmethod
     def handle_click(cls, x, y):
         for button in cls.buttons:
@@ -99,11 +103,12 @@ class Button(object):
         print("hit")
         
         
-# lokaler onmousehit dekorator, 
+# lokaler onmousehit dekorator, im finalen projekt glaub ich irrelevant, nur debugging
 @onMouseHit
 def onClick(x, y):
     Button.handle_click(x, y)
-    
+
+#programm wird nur ausgeführt, wenn das programm direkt ausgeführt wird (sonst wird es ausgeführt, wenn es importiert wird)
 if __name__ == "__main__":
     makeTurtle()
     a = Button(0, 0, 200, 100, "green", "hello", 25)
