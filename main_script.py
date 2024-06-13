@@ -498,8 +498,12 @@ def draw_border():
 #Bei Mausklick eine Zelle schwarz färben / auf dem Startbilschirm click an button weitergeben
 @onMouseHit
 def onClick(x, y):
+    global block_loc
+    #wenn gecklickt wird, sollen alle buttons den klick handeln
     Button.handle_click(x, y)
+    #falls das spiel läuft:
     if game_loop:
+        #berechnen von der mitte des angeklickten blocks (xxx, yyy)
         xx = (x - 20) // CELLSIZE
         xxx = xx * CELLSIZE + CELLSIZE
         yy = (y - 20) // CELLSIZE
@@ -507,7 +511,7 @@ def onClick(x, y):
         # Die Position der Turtle speichern
         turtle_x = getX()
         turtle_y = getY()
-        # Zelle schwarz färben
+        # Zelle schwarz färben falls angeclickte zelle weiß ist
         hideTurtle()
         setPos(x, y)
         if getPixelColorStr() == "white":
@@ -516,18 +520,18 @@ def onClick(x, y):
             else:
                 setFillColor("green")
             fill()
-
+            
+            #die koordinate vom block wird der blöcke liste hinzugefügt
             block_loc.append([xxx, yyy])
 
-
+        #falls hier bereits ein block ist, wird dieser weiß gefärbt und aus der blöckeliste entfernt
         elif getPixelColorStr() == "black" or getPixelColorStr() == "green":
             setFillColor("white")
             fill()
             block_loc.remove([xxx, yyy])
 
-            # Die Turtle wieder dahin zurücksetzen,
-            # wo sie am Anfang war.
-
+        
+        #turtle wird zurückgesetzt
         setPos(turtle_x, turtle_y)
 #definition Aktions/Fragezeichenfelder
 def action_cell(pos):
@@ -569,33 +573,37 @@ def draw_action_cell() :
     setHeading(h)
     setPos(pos)
 
-
+#funktion zum zeichnen eines einzelen todeskästchens
 def draw_death_block():
     global death_blocks
     global action_cells
+    #generieren von zufälliger x und y koodinate im raster
     x = (randint(-9, 9))*40
     y = (randint(-9, 9))*40
-    
+    #solange ein kästchen mit diesen koordinaten, oder eine action cell mit diesen koordinaten existiert, wird ein neuer block generiert
     while [x, y] in death_blocks or [x, y] in action_cells:
         x = (randint(-10, 9))*40
         y = (randint(-10, 9))*40
     
     turtlePos = getPos()
     setPos(x, y)
+    #zeichnen von dem block
     setFillColor("red")
     fill()
     setPos(turtlePos)
+    #hinzufügen von den koordinaten in die death_blocks liste
     death_blocks.append([x, y])
 
-
+#definieren von dem startbildschirm
 def start_screen():
     clear(bgcolor)
+    #simple texte
     setPos(0, 350)
     setPenColor("#000000")
     setFont("DiMurphic", Font.PLAIN, 65)
     label("Welcome to the turtle layrinth?", adjust = "c")
     setFont("sans serif", Font.PLAIN, 24)
-    
+    #zwei buttons für versch. untermenüs
     start_button = PlayButton(0, 75, 150, 150, "green", " ", 30)
     credits_button = CreditsButton(0, -350, 200, 50, "red", "credits", 10)
 
@@ -616,6 +624,7 @@ def save_slot_selection():
     slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
     #1 knopf um schwierigkeitsgrad zu bestätigen und fortzufahren
     apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
+    # knopf zum rückkehren ins vorige menü
     slot_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "slot_screen")
     
 #definieren von menüseite mit credits
