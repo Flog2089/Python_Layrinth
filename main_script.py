@@ -885,6 +885,8 @@ while True:
                         if a % 2 == 0:
                             pprob.clear_shadow()
                             pprob.advance()
+			if a / 10 == 0 :
+			    draw_death_block()
                         pprob.check_catch()
                         if not game_loop:
                             break
