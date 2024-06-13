@@ -53,6 +53,7 @@ class Button(object):
         setPos(self.posX, self.posY)
         #zentrieren des Buttons auf der X, aber nicht auf der y achse
         fd(self.width / 2 - self.radius)
+        #erzeugt Rundungen bei den Ecken des buttons, während dieser gezeichnet wird (Berechnungen & modifizierter Code von chatGPT)
         for _ in range(23):
             fd((self.radius * 3.14159 / 180) * 3.91)
             rt(-3.91)
@@ -68,6 +69,7 @@ class Button(object):
         for _ in range(23):
             fd((self.radius * 3.14159 / 180) * 3.91)
             rt(-3.91)
+        #bewegt turtle in die Mitte des Buttons, füllt diesen mit der füllfarbe und macht mit Label den dazugehörigen Text in die Mitte 
         fd(self.width / 2 - self.radius)
         rt(90)
         pu()
@@ -76,24 +78,28 @@ class Button(object):
         setPenColor("black")
         label(self.text, adjust = "c")
         
+    #funktion um den button unbrauchbar zu machen
     def destroy(self):
         self.is_working = False
         
+    #funktion um den button wieder brauchbar zu machen
     def undestroy(self):
         self.is_working = False
 
+    #classmethod (eine Funktion, welche nicht mit einzelnen Objekten der Klasse, sondern mit der Klasse selbst assoziiert ist), welche durch die klasseneigene Liste durchgeht, und bei jedem Button in der liste checkt, ob dieser angeklickt wurde, wenn ja wird die click Action dieses Buttons ausgeführt
     @classmethod
     def handle_click(cls, x, y):
         for button in cls.buttons:
             if button.posX - button.width / 2 < x < button.posX + button.width / 2 and button.posY > y > button.posY - button.height:
                 if button.is_working:
                     button.click_action()
-        
+    
+    #default click Action zum debuggen (wird später überschrieben)
     def click_action(self):
         print("hit")
         
         
-# Bind the click handler to mouse events
+# lokaler onmousehit dekorator, 
 @onMouseHit
 def onClick(x, y):
     Button.handle_click(x, y)
