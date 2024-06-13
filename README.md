@@ -1,8 +1,8 @@
 # Python_Layrinth
 
 Credits (Falls man sie im spiel nicht gesehen hat) :
-Flog - Animieter Spieler, Action Cells, Gegner, Sprites 
-Doman - Main Menu, Save Slot System, Rand (Wow!), Todes-Blöcke, Farbwechsel-Blöcke
+Flog - Animieter Spieler, Action Cells, Sprites 
+Doman - Main Menu, Save Slot System, Rand (Wow!), Todes-Blöcke, Farbwechsel-Blöcke, Gegner
 
 Anleitung:
 Man kann mit der Maus Blöcke platzieren und wenn der Spieler diesen berührt, dreht er sich bei einem Schwarzen Block nach Rechts und bei einem Grünen nach links.
