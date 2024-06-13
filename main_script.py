@@ -21,6 +21,8 @@ slot_selected = False
 difficulty_selected = False
 credits_selected = False
 game_loop = False
+again = False
+combo_breaker = False
 
 dir_right = True
 block_loc = []
@@ -33,11 +35,12 @@ CELLSIZE = 40
 bgcolor = "#88AABF"
 
 #turtle wird mit dem angegebenen bild erschaffen (Bild existiert nicht, code nur wegen nostalgie)
+setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
 
 
 #setzt die größe des turtle fensters auf die oben definierten variablen
-setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
+
 
 
 #definieren von class slotbutton, welche von parentclass button vererbt
@@ -247,6 +250,38 @@ class CreditsButton(Button):
 
 
 
+class AgainButton(Button):
+    #s.o.
+    def __init__(self, posX, posY, width, height, color, text, radius):
+        super(AgainButton, self).__init__(posX, posY, width, height, color, text, radius)
+
+    #startet spiel neu
+    def click_action(self):
+        global again
+        global difficulty_selected
+        global slot_selected
+        global credits_selected
+        global game_loop
+        global game_running
+        global combo_breaker
+        again = True
+        slot_selected = False
+        difficulty_selected = False
+        credits_selected = False
+        game_loop = False
+        game_running = False
+        combo_breaker = False
+        
+class QuitButton(Button):
+    #s.o.
+    def __init__(self, posX, posY, width, height, color, text, radius):
+        super(QuitButton, self).__init__(posX, posY, width, height, color, text, radius)
+
+    #beendet spiel
+    def click_action(self):
+        global combo_breaker
+        combo_breaker = True
+
 class Enemy:
     def __init__(self, color, difficulty, name, sprite, posX, posY):
         self.color = color
@@ -413,9 +448,11 @@ def drawGrid():
         moveTo(+PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
 
     setPos(0, 0)
-    showTurtle()
     
-    draw_action_cells()
+    for i in range (3 * difficulty) :
+        draw_action_cells()
+    
+    showTurtle()
 
 def draw_border():
     hideTurtle()
@@ -475,9 +512,11 @@ def action_cell(pos):
     global a
     global sleep_multiplier
     global b
-    r = randint(1, 3)
+    r = randint(1, 1)
     drawImage("{}/sprites/white.png".format(wd))
     if r == 1 :
+        doStep()
+        drawImage("{}/sprites/white.png".format(wd))
         doStep()
     elif r == 2:
         sleep_multiplier = 0.3
@@ -485,6 +524,7 @@ def action_cell(pos):
     elif r == 3:
         setPos((randint(-9, 9))*40, (randint(-9, 9))*40)
     remove_action_cell(pos)
+    draw_action_cells()
     
         
 def remove_action_cell(pos):
@@ -495,15 +535,17 @@ def remove_action_cell(pos):
     
 #definition plazierung der Aktions/Fragezeichenfelder
 def draw_action_cells() :
+    pos = getPos()
     h = heading()
     setHeading(0)
-    for i in range (3 * difficulty) :
-        x = (randint(-9, 9))*40
-        y = (randint(-9, 9))*40
-        setPos(x, y)
-        drawImage("{}/sprites/action_sprite.png".format(wd))
-        action_cells.append([x, y])
+    
+    x = (randint(-9, 9))*40
+    y = (randint(-9, 9))*40
+    setPos(x, y)
+    drawImage("{}/sprites/action_sprite.png".format(wd))
+    action_cells.append([x, y])
     setHeading(h)
+    setPos(pos)
 
 
 
@@ -511,7 +553,7 @@ def start_screen():
     clear(bgcolor)
     setPos(0, 350)
     setPenColor("#000000")
-    setFont("papyrus", Font.PLAIN, 65)
+    setFont("DiMurphic", Font.PLAIN, 65)
     label("Welcome to the turtle layrinth?", adjust = "c")
     setFont("sans serif", Font.PLAIN, 24)
     
@@ -591,8 +633,6 @@ def difficulty_selection():
     home()
     setHeading(0)
     
-    
-        
 
     #füllt alles mit einem angenehmen 777777 grau aus
     
@@ -607,6 +647,19 @@ def difficulty_selection():
     hard_button = DifficultyButton(250, 50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
     apply_button = ApplyDifficultyButton(0, -150, 400, 100, "#BB77BB", "Apply" , 20)
     difficulty_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "difficulty_screen")
+
+def game_over_screen():
+    clean(bgcolor)
+    setPenColor("red")
+    setPos(0, 200)
+    setFontSize(80)
+    label("DU BIST GESTORBEN?", adjust = "c")
+    setPos(0, -100)
+    setFontSize(50)
+    setPenColor("black")
+    label("Your score: {}".format(a), adjust = "c")
+    again_button = AgainButton(0, -150, 150, 100, "gray", "Again", 20)
+    quit_button = QuitButton(0, -300, 150, 100, "red", "Quit", 20)
     
 
 def read_score(save_slot):
@@ -648,7 +701,8 @@ def change_color_orientation(color):
 game_running = False
 
 while True:
-    
+    if combo_breaker:
+        break
     start_screen()
     while not game_running:
         arand = randint(0, 3)
@@ -671,6 +725,8 @@ while True:
                 break
     
     while game_running:
+        if combo_breaker:
+            break
         for button in Button.buttons:
             button.destroy()
             
@@ -682,7 +738,8 @@ while True:
                 break
                 
         while credits_selected:
-            
+            if combo_breaker:
+                break
             save_slot_selection()
             
             
@@ -695,6 +752,8 @@ while True:
             while slot_selected:
                 for button in Button.buttons:
                     button.destroy()
+                if combo_breaker:
+                    break
                     
                 difficulty_selection()
                 
@@ -714,6 +773,8 @@ while True:
                         break
                 
                 while difficulty_selected:
+                    if combo_breaker:
+                        break
                     for button in Button.buttons:
                         button.destroy()
                     
@@ -766,7 +827,23 @@ while True:
                     difficulty_selected = False
                     save_score(a, save_slot)
                     read_score(save_slot)
+                    action_cells = []
+                    block_loc = []
+                    dir_right = True
+                    again = False
+                    game_over_screen()
+                    while not again:
+                        if combo_breaker:
+                            break
+                    
+                    
                 
+clean(bgcolor)
+setPos(0, 0)
+setFontSize(50)
+label("You may now close the turtle window", adjust = "c")
+
+
                                
         
     
