@@ -112,7 +112,7 @@ class SaveSlotButton(SlotButton):
         #macht einen Text zur ausgabe vom highscore
         self.saved_text = "High Score: " + str(self.saved_score)
         #übernahme von funktionen und variablen von parent
-        super(SaveSlotButton, self).__init__(posX, posY, width, height, colo<r, text, border, border_color, radius)
+        super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text, border, border_color, radius)
         self.make_on_top()
 
 
