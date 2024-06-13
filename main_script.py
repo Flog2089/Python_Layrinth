@@ -123,7 +123,7 @@ class SaveSlotButton(SlotButton):
     @classmethod
     def unclick(cls):
         global save_slot
-        #der rand von jedem saveslotbutton in der liste der klasse, welcher nicht dem gerade ausgewählten slot entspricht, wird entfernt
+        #der rand von jedem saveslotbutton in der liste der class, welcher nicht dem gerade ausgewählten slot entspricht, wird entfernt
         for b in cls.save_slot_buttons:
             if b.slot != save_slot:
                 setPos(b.posX, b.posY)
@@ -199,7 +199,7 @@ class BackButton(Button):
         self.var = var
         super(BackButton, self).__init__(posX, posY, width, height, color, text, radius)
 
-
+		 #abhängig davon welche variable bei erstellen vom Button angegeben wird, werden versch. variablen auf falsch gesetzt, um menüpunkte hoch zu gehen
     def click_action(self):
         global difficulty_selected
         global slot_selected
@@ -212,25 +212,28 @@ class BackButton(Button):
             credits_selected = False
         elif self.var == "credits_screen":
             game_running = False
-            
+
+#definieren class für den Start-Knopf auf dem startbildschirm            
 class PlayButton(Button):
-    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    #s.o.
     def __init__(self, posX, posY, width, height, color, text, radius):
         super(PlayButton, self).__init__(posX, posY, width, height, color, text, radius)
         self.make_arrow()
 
-
+		 #fährt fort zum nächsten menüpunkt
     def click_action(self):
         global game_running
         global credits_selected
         credits_selected = True
         game_running = True
-    
+
+    #erstellt den grünen Pfeil auf dem startknopf
     def make_arrow(self):
         
         setPos(self.posX - 7, self.posY - self.height / 2)
         drawImage("{}/sprites/start_arrow.png".format(wd))
 
+#
 class CreditsButton(Button):
     #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
     def __init__(self, posX, posY, width, height, color, text, radius):
