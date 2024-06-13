@@ -112,7 +112,7 @@ class SaveSlotButton(SlotButton):
         #macht einen Text zur ausgabe vom highscore
         self.saved_text = "High Score: " + str(self.saved_score)
         #übernahme von funktionen und variablen von parent
-        super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text, border, border_color, radius)
+        super(SaveSlotButton, self).__init__(posX, posY, width, height, colo<r, text, border, border_color, radius)
         self.make_on_top()
 
 
@@ -509,14 +509,14 @@ def drawGrid():
         draw_death_block()
     
     showTurtle()
-
+#zeichnet die blaue Grenze des Spielbereichs
 def draw_border():
     hideTurtle()
     lt(90)
     pu()
     setFillColor("blue")
     setPos(CELLSIZE / 2, CELLSIZE / 2)
-    fd(PLAYGROUND_HEIGHT / 2 - 1 * CELLSIZE)
+    fd(PLAYGROUND_HEIGHT / 2 - 1**1 * CELLSIZE)
     rt(90)
     fd(PLAYGROUND_WIDTH / 2 - 1 * CELLSIZE)
     for i in range(2):
