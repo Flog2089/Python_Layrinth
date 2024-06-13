@@ -757,14 +757,23 @@ def change_color_orientation(color):
 # DA CODE STARTS RUNNING HERE
 game_running = False
 
+#das menü
+#läuft in dauerschleife
 while True:
+    #wenn combo_breaker true ist wird die dauerschleife verlassen
     if combo_breaker:
         break
+    #zeichnet startbildschirm
     start_screen()
+    #solange das spiel nicht anfängt zu laufen wird dauerhaft folgendes ausgeführt (turtles laufen über bildschirm)(sodass start_screen nicht die ganze zeit ausgeführt wird
     while not game_running:
+        #zufallszahl zwischen 0 und 3
         arand = randint(0, 3)
+        #zufallsfarbe aus der liste
         setColor(choice(["red", "blue", "yellow", "green"])) 
+        #abhängig davon was arand ist, kommt turtle aus versch richtungen & positionen
         if arand == 0:
+            #feste x postion außerhalb des bildschirms, jedoch zufällige y koordinate
             setPos(600, randint(-300, 300))
         elif arand == 1:
             setPos(-600, randint(-300, 300))
@@ -772,48 +781,72 @@ while True:
             setPos(randint(-300, 300), 600)
         elif arand == 3:
             setPos(randint(-300, 300), -600)
+        #und schaut auf einen random punkt auf dem spielfeld
         setHeading(towards(0 + randint(-400, 400), 0 - randint(-400, 400)))
+        #wird sichtbar
         st()
+        #fragwürdige entwicklungsentscheidungen
+        #lässt turtle in mittlerem tempo über spielfeld laufen solange das spiel nicht läuft (also bevor der button angeclickt wird)
         counter = 0
         while not game_running:
             counter += 1
             fd(8)
             if counter == 200:
                 break
-    
+        #alternative, wobei button click nur registriert wird, nachdem die turtle angekommen ist:
+#        for i in range(200):
+#            fd(8)
+#            if i == 200:
+#                break
+#        
+    #sobald das spiel anfängt zu laufen (game_running = true)
     while game_running:
+        #s.o.
         if combo_breaker:
             break
+        #alle bisherigen buttons in der button.buttons liste werden zerstört (siehe andere datei)
         for button in Button.buttons:
             button.destroy()
-            
+        
+        #credits screen wird geladen
         credits_screen()
+        
+        #solange die credits noch nicht selected sind läuft folgendes ab
         while not credits_selected:
+            #wenn das spiel nicht läuft werden alle buttons zerstört, und die schleife wird verlassen (damit credits_screen() nicht dauerhaft ausgeführt wird)
             if not game_running:
                 for button in Button.buttons:
                     button.destroy()
                 break
-                
+        
+        #fährt fort sobald credits_selected = true
         while credits_selected:
+            #s.o.
             if combo_breaker:
                 break
+            #zeichnet die save slot selection
             save_slot_selection()
             
-            
+            #solange slots nicht selected sind wird folgendes ausgeführt:
             while not slot_selected:
+                #wenn credits nicht selected sind, werden alle buttons gelöscht und die schleife wird verlassen
                 if not credits_selected:
                     for button in Button.buttons:
                         button.destroy()
                     break
-                    
+            
+            #fährt fort sobald slot_selected = true
             while slot_selected:
+                #s.o.
                 for button in Button.buttons:
                     button.destroy()
                 if combo_breaker:
                     break
-                    
+                
+                #zeichnet die difficulty selection
                 difficulty_selection()
                 
+                #wird nicht erklärt
                 while not difficulty_selected:
                     if getKey() == "p":
                         if getKeyWait() == "a":
@@ -823,53 +856,72 @@ while True:
                                     
                     if getKey() == "u":
                         difficulty_selection()
-                        
+                    
+                    #wenn slots nicht selected sind, werden alle buttons gelöscht und die schleife wird verlassen
                     if not slot_selected:
                         for button in Button.buttons:
                             button.destroy()
                         break
                 
+                #fährt fort sobald difficulty_selected = true
                 while difficulty_selected:
+                    #s.o.
                     if combo_breaker:
                         break
                     for button in Button.buttons:
                         button.destroy()
                     
-                    
+                    #setzt die game loop auf true
                     game_loop = True
+                    #resettet die player sprite direction
                     player_Sprite_direction = 1
+                    #resetet (score) counter
                     a = 1
+                    #liest den score aus datei
                     read_score(save_slot)
+            
                     clear()
                     showTurtle()
+                    #zeichnet das spielfeld
                     drawGrid()
                     draw_border()
-                    # An dieser Stelle könntest du ein Feld als Ziel färben.
                     # Die Turtle auf ein Anfangsfeld setzen:
                     setPos(-PLAYGROUND_WIDTH / 2 + 5*CELLSIZE // 2, -PLAYGROUND_HEIGHT / 2 + 5*CELLSIZE // 2)
                     penUp()
                     showTurtle()
                     setHeading(90)
+                    #setzt referenzwert für das vergehen von zeit auf 0
                     b = 0
+                    #gegner pprob wird auf [80, 80] gesetzt
                     pprob.pos = [80, 80]
+                    #läuft solange game_loop true ist
                     while game_loop:
-                    
+                        #variable a wird inkrementiert
                         a += 1
+                        #turtle wird zur sicherheit immer wieder versteckt
                         ht()
-                    
+                        
+                        #gegner geht nach vorne, wenn a gerade ist (also bei jedem zweiten spieler-schritt
                         if a % 2 == 0:
                             pprob.clear_shadow()
                             pprob.advance()
+                        #gegner überprüft, ob spieler gefangen wurde
                         pprob.check_catch()
+                        #wenn game_loop auf falsch gesetzt wird, wird die loop unverzüglich verlassen
                         if not game_loop:
                             break
+                        #spieler macht schritt
                         doStep()
+                        #gegner überprüft wieder
                         pprob.check_catch()
+                        #es wird kurz geschlafen, damit spieler nicht unendlich schnell ist (schlafdauer abhängig von schwierigkeit und effekt-feldern
                         sleep(0.7 - 0.2 * difficulty * sleep_multiplier)
+                        #vorherig gemalte spieler-sprite wird übermalt
                         setFillColor("white")
-                    
                         drawImage("{}/sprites/white.png".format(wd))
+                        #keyboard input für farbwechsel der blöcke
                         key = getKey()
+                        #abhängig davon, was der input ist, werden die blöcke entweder grün oder schwarz
                         if key == "a":
                             dir_right = False
                             change_color_orientation("green")
@@ -877,28 +929,34 @@ while True:
                             dir_right = True
                             change_color_orientation("black")
                     
-                    
                         
+                        #falls fünf schritte seit b vergangen sind, wird der sleep_multiplier effekt von den action_cells resettet
                         if a - 5 == b:
                             sleep_multiplier = 1
                             
-                    
+                    #hier kommt man hin, wenn man stirbt
+                    #kurz warten nach tod
                     sleep(1)
-                    difficulty_selected = False
+                    #speichern und auslesen von score (a)
                     save_score(a, save_slot)
                     read_score(save_slot)
+                    #alle variablen zurücksetzten 
+                    difficulty_selected = False
                     action_cells = []
                     block_loc = []
                     death_blocks = []
                     dir_right = True
                     again = False
+                    #game over bildschirm zeichen
                     game_over_screen()
+                    #solange warten bis again wahr wird, und wenn auch combo_breaker wahr ist das spiel beenden, falls nicht, zurück zum startbildschirm
                     while not again:
                         if combo_breaker:
                             break
                     
                     
-                
+#wird ausgeführt falls spiel beendet wird
+#zeichnet den end-screen
 clean(bgcolor)
 setPos(0, 0)
 setFontSize(50)
