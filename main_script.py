@@ -340,6 +340,7 @@ pprob = Enemy(1, 1, 1, "enemy_sprite", 80, 80)
 
 
 def doStep():
+    #Variablen werden importiert
     global player_Sprite_direction
     global player_Sprite
     global trailing_color
@@ -351,29 +352,36 @@ def doStep():
     # setzen wir sie wieder zurück und drehen sie dafür.
     if getPixelColorAheadStr(CELLSIZE) == "black":
         right(90)
+	#hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction += 1
         if player_Sprite_direction > 4 :
             player_Sprite_direction = 1
+    # Falls die Turtle auf einem Grünen landet,
+    # dreht sie sich nach links.
     elif getPixelColorAheadStr(CELLSIZE) == "green":
         lt(90)
+	#hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction -= 1
         if player_Sprite_direction < 1 :
             player_Sprite_direction = 4
-
+    # Falls die Turtle auf einem Blauen Feld landet,
+    # dreht sie sich um.
     elif getPixelColorAheadStr(CELLSIZE) == "blue":
         right(180)
+	#hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction += 2
         if player_Sprite_direction > 4 :
             player_Sprite_direction -= 4
+    # Turtle geht die eingestellte cellsize nach vorne
     elif game_loop:
         fd(CELLSIZE)
-    
+    # Falls man auf einem death block steht wird game_loop auf False gesetzt
     if pos in death_blocks:
         game_loop = False
-    
+    # Falls man auf einem Aktionsblock steht wird action_cell ausgeführt
     if pos in action_cells:
         action_cell(pos)
-
+	    
     if game_loop:
 
 	#Guckt in welche richtung der Spieler schaut
