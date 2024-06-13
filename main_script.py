@@ -515,10 +515,12 @@ def draw_border():
     lt(90)
     pu()
     setFillColor("blue")
+    #Turtle wird so gesetzt, dass die felder gut ausgefüllt werden können
     setPos(CELLSIZE / 2, CELLSIZE / 2)
     fd(PLAYGROUND_HEIGHT / 2 - 1**1 * CELLSIZE)
     rt(90)
     fd(PLAYGROUND_WIDTH / 2 - 1 * CELLSIZE)
+    #füllt die kästchen aus
     for i in range(2):
         rt(90)
         for j in range(24):
@@ -568,15 +570,20 @@ def action_cell(pos):
     global a
     global sleep_multiplier
     global b
+    #eine zufallszahl wird gewählt, die bestimmt was passieren soll
     r = randint(1, 3)
     drawImage("{}/sprites/white.png".format(wd))
+    #boost: schiesst dich 2 felder nach vorne
     if r == 1 :
         doStep()
+	#drawimage damit die sprite gelöscht wird auf dem Spielfeld
         drawImage("{}/sprites/white.png".format(wd))
         doStep()
+    #verlangsamt den spieler
     elif r == 2:
         sleep_multiplier = 0.3
         b = a
+    #teleportiert dich zufällig
     elif r == 3:
         setPos((randint(-9, 9))*40, (randint(-9, 9))*40)
     remove_action_cell(pos)
