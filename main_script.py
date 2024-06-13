@@ -28,6 +28,7 @@ dir_right = True
 block_loc = []
 action_cells = []
 enemies = []
+death_blocks = []
 
 PLAYGROUND_HEIGHT = 1000
 PLAYGROUND_WIDTH = 1000
@@ -342,6 +343,8 @@ def doStep():
     global player_Sprite_direction
     global player_Sprite
     global trailing_color
+    global death_blocks
+    global game_loop
     pos = getPos()
     # Einen Schritt nach vorne machen.
     # Falls die Turtle auf einem schwarzen Feld landet,
@@ -362,72 +365,76 @@ def doStep():
         player_Sprite_direction += 2
         if player_Sprite_direction > 4 :
             player_Sprite_direction -= 4
-    else:
+    elif game_loop:
         fd(CELLSIZE)
+    
+    if pos in death_blocks:
+        game_loop = False
     
     if pos in action_cells:
         action_cell(pos)
 
-
-    if player_Sprite_direction == 1 :
-
-        if player_Sprite == 1 :
-            drawImage("{}/sprites/Sprite_r_1.png".format(wd))
-            player_Sprite = 2
-        elif player_Sprite == 2:
-            drawImage("{}/sprites/Sprite_r_2.png".format(wd))
-            player_Sprite = 3
-        elif player_Sprite == 3:
-            drawImage("{}/sprites/Sprite_r_1.png".format(wd))
-            player_Sprite = 4
-        elif player_Sprite == 4:
-            drawImage("{}/sprites/Sprite_r_3.png".format(wd))
-            player_Sprite = 1
-
-    elif player_Sprite_direction == 2 :
-
-        if player_Sprite == 1 :
-            drawImage("{}/sprites/Sprite_d_1.png".format(wd))
-            player_Sprite = 2
-        elif player_Sprite == 2:
-            drawImage("{}/sprites/Sprite_d_2.png".format(wd))
-            player_Sprite = 3
-        elif player_Sprite == 3:
-            drawImage("{}/sprites/Sprite_d_1.png".format(wd))
-            player_Sprite = 4
-        elif player_Sprite == 4:
-            drawImage("{}/sprites/Sprite_d_3.png".format(wd))
-            player_Sprite = 1
-
-    elif player_Sprite_direction == 3 :
-
-        if player_Sprite == 1 :
-            drawImage("{}/sprites/Sprite_l_1.png".format(wd))
-            player_Sprite = 2
-        elif player_Sprite == 2:
-            drawImage("{}/sprites/Sprite_l_2.png".format(wd))
-            player_Sprite = 3
-        elif player_Sprite == 3:
-            drawImage("{}/sprites/Sprite_l_1.png".format(wd))
-            player_Sprite = 4
-        elif player_Sprite == 4:
-            drawImage("{}/sprites/Sprite_l_3.png".format(wd))
-            player_Sprite = 1
-
-    elif player_Sprite_direction == 4 :
-
-        if player_Sprite == 1 :
-            drawImage("{}/sprites/Sprite_u_1.png".format(wd))
-            player_Sprite = 2
-        elif player_Sprite == 2:
-            drawImage("{}/sprites/Sprite_u_2.png".format(wd))
-            player_Sprite = 3
-        elif player_Sprite == 3:
-            drawImage("{}/sprites/Sprite_u_1.png".format(wd))
-            player_Sprite = 4
-        elif player_Sprite == 4:
-            drawImage("{}/sprites/Sprite_u_3.png".format(wd))
-            player_Sprite = 1
+    if game_loop:
+        
+        if player_Sprite_direction == 1 :
+    
+            if player_Sprite == 1 :
+                drawImage("{}/sprites/Sprite_r_1.png".format(wd))
+                player_Sprite = 2
+            elif player_Sprite == 2:
+                drawImage("{}/sprites/Sprite_r_2.png".format(wd))
+                player_Sprite = 3
+            elif player_Sprite == 3:
+                drawImage("{}/sprites/Sprite_r_1.png".format(wd))
+                player_Sprite = 4
+            elif player_Sprite == 4:
+                drawImage("{}/sprites/Sprite_r_3.png".format(wd))
+                player_Sprite = 1
+    
+        elif player_Sprite_direction == 2 :
+    
+            if player_Sprite == 1 :
+                drawImage("{}/sprites/Sprite_d_1.png".format(wd))
+                player_Sprite = 2
+            elif player_Sprite == 2:
+                drawImage("{}/sprites/Sprite_d_2.png".format(wd))
+                player_Sprite = 3
+            elif player_Sprite == 3:
+                drawImage("{}/sprites/Sprite_d_1.png".format(wd))
+                player_Sprite = 4
+            elif player_Sprite == 4:
+                drawImage("{}/sprites/Sprite_d_3.png".format(wd))
+                player_Sprite = 1
+    
+        elif player_Sprite_direction == 3 :
+    
+            if player_Sprite == 1 :
+                drawImage("{}/sprites/Sprite_l_1.png".format(wd))
+                player_Sprite = 2
+            elif player_Sprite == 2:
+                drawImage("{}/sprites/Sprite_l_2.png".format(wd))
+                player_Sprite = 3
+            elif player_Sprite == 3:
+                drawImage("{}/sprites/Sprite_l_1.png".format(wd))
+                player_Sprite = 4
+            elif player_Sprite == 4:
+                drawImage("{}/sprites/Sprite_l_3.png".format(wd))
+                player_Sprite = 1
+    
+        elif player_Sprite_direction == 4 :
+    
+            if player_Sprite == 1 :
+                drawImage("{}/sprites/Sprite_u_1.png".format(wd))
+                player_Sprite = 2
+            elif player_Sprite == 2:
+                drawImage("{}/sprites/Sprite_u_2.png".format(wd))
+                player_Sprite = 3
+            elif player_Sprite == 3:
+                drawImage("{}/sprites/Sprite_u_1.png".format(wd))
+                player_Sprite = 4
+            elif player_Sprite == 4:
+                drawImage("{}/sprites/Sprite_u_3.png".format(wd))
+                player_Sprite = 1
     
 
 # Zeichnet das Grundgitter:
@@ -450,7 +457,8 @@ def drawGrid():
     setPos(0, 0)
     
     for i in range (3 * difficulty) :
-        draw_action_cells()
+        draw_action_cell()
+        draw_death_block()
     
     showTurtle()
 
@@ -524,7 +532,7 @@ def action_cell(pos):
     elif r == 3:
         setPos((randint(-9, 9))*40, (randint(-9, 9))*40)
     remove_action_cell(pos)
-    draw_action_cells()
+    draw_action_cell()
     
         
 def remove_action_cell(pos):
@@ -534,7 +542,7 @@ def remove_action_cell(pos):
         pass
     
 #definition plazierung der Aktions/Fragezeichenfelder
-def draw_action_cells() :
+def draw_action_cell() :
     pos = getPos()
     h = heading()
     setHeading(0)
@@ -547,6 +555,23 @@ def draw_action_cells() :
     setHeading(h)
     setPos(pos)
 
+
+def draw_death_block():
+    global death_blocks
+    global action_cells
+    x = (randint(-9, 9))*40
+    y = (randint(-9, 9))*40
+    
+    while [x, y] in death_blocks or [x, y] in action_cells:
+        x = (randint(-10, 9))*40
+        y = (randint(-10, 9))*40
+    
+    turtlePos = getPos()
+    setPos(x, y)
+    setFillColor("red")
+    fill()
+    setPos(turtlePos)
+    death_blocks.append([x, y])
 
 
 def start_screen():
@@ -804,6 +829,8 @@ while True:
                             pprob.clear_shadow()
                             pprob.advance()
                         pprob.check_catch()
+                        if not game_loop:
+                            break
                         doStep()
                         pprob.check_catch()
                         sleep(0.7 - 0.2 * difficulty * sleep_multiplier)
@@ -824,11 +851,13 @@ while True:
                             sleep_multiplier = 1
                             
                     
+                    sleep(1)
                     difficulty_selected = False
                     save_score(a, save_slot)
                     read_score(save_slot)
                     action_cells = []
                     block_loc = []
+                    death_blocks = []
                     dir_right = True
                     again = False
                     game_over_screen()
