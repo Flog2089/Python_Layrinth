@@ -599,50 +599,56 @@ def start_screen():
     start_button = PlayButton(0, 75, 150, 150, "green", " ", 30)
     credits_button = CreditsButton(0, -350, 200, 50, "red", "credits", 10)
 
-
+#definieren von auswahlbildschirm für den speicherstand
 def save_slot_selection():
+    #färbt den ganzen bildschirm mit der hintergrundfarbe
     clear(bgcolor)
+    #macht ein label mit text
     setPos(0, 400)
     setPenColor("black")
     setFontSize(60)
     label("Select your save slot:", adjust = "c")
+    
+    #erstellen von 5 button objekten von oben definierten Button classes mit jeweiligen oben angegebenen properties
+    #3 reaktive knöpfe zum auswählen von schwierigkeitsgrad
     slot1_button = SaveSlotButton(0, 250, 250, 150, "#00AAAA", "Slot 1", 1, 10, "#008A8A", 20)
     slot2_button = SaveSlotButton(0, 50, 250, 150, "#009999", "Slot 2", 2, 10, "#007979", 20)
     slot3_button = SaveSlotButton(0, -150, 250, 150, "#008888", "Slot 3", 3, 10, "#006868", 20)
+    #1 knopf um schwierigkeitsgrad zu bestätigen und fortzufahren
     apply_button = ApplySlotButton(360, -330, 150, 100, "#BB77BB", "Apply", 30)
     slot_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "slot_screen")
     
+#definieren von menüseite mit credits
 def credits_screen():
+    #s.o.
     clean(bgcolor)
     ht()
+    #erstellen eines back button objektes um credits zu verlassen
     credits_back_buttons = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "credits_screen")
-    
+    #erstellen von allen texten auf dem credits screen
     setPos(0, 380)
     setFontSize(60)
     label("Credits:", adjust = "c")    
-    
     setFontSize(25)
     setPos(0, 270)
     label("Flog - alle Sprites von Hand erstellt, Spieler Frame für Frame animiert, ", adjust = "c")
     setPos(0, 240)
     label("Action Cells für mehr Dynamik eingebaut.", adjust = "c")
-    
     setPos(0, 190)
     label("Doman - Menüsystem von null auf genestet, sich mit dem blauen Rand abgemüht,", adjust = "c")
     setPos(0, 160)
     label("den Gegner (pprob) ins Leben gerufen, Blöcke Farben wechseln lassen", adjust = "c")
-    
     setPos(0, 110)
     label("ChatGPT - genervt, weil es Anweisungen nicht verstanden hat", adjust = "c")
 
     
-
+#wird nicht erklärt, da easter egg
 def hidden_text():
     setPenColor("black")
     penUp()
     setPos(0, 430)
     
-    #code text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
+    #code für den text (danke gemini) wegen fehlendem support für \n im befehl label() in mehrere zeilen aufgeteilt :(
     label("Greetings, esteemed player!", adjust = "c")
     back(30)
     label("To ensure a smooth and delightful experience,", adjust = "c")
@@ -663,32 +669,35 @@ def hidden_text():
     back(30)
     
     setPos(400, 400)
+    #https://www.youtube.com/watch?v=dQw4w9WgXcQ
     drawImage("{}/sprites/smol_rick.png".format(wd))
 
-#definition startbildschirm
+#definieren von schwierigkeiten-auswahlbildschirm
 def difficulty_selection():
+    #s.o.
     clean(bgcolor)
     hideTurtle()
-    home()
+    #setzt turtle zurück nach hause und nach oben guckend
     setHeading(0)
+    home()
     
-
-    #füllt alles mit einem angenehmen 777777 grau aus
-    
-
-    #macht drei knöpfe (s.o.)
+    #erstellen von text auf seite
     setPos(0, 100)
     setPenColor("black")
     label("Select difficulty:", adjust = "c")
 
+    #macht 5 knöpfe (s.o.)
     easy_button = DifficultyButton(-250, 50, 200, 100, "#36802D", "Easy", 1, 10, "#16600D", 20)
     medium_button = DifficultyButton(0, 50, 200, 100, "#FFBF00", "Medium", 2, 10, "orange", 20)
     hard_button = DifficultyButton(250, 50, 200, 100, "#BF0000", "Hard", 3, 10, "dark red", 20)
     apply_button = ApplyDifficultyButton(0, -150, 400, 100, "#BB77BB", "Apply" , 20)
     difficulty_back_button = BackButton(-400, 450, 100, 100, "#CCCCCC", "<--", 10, "difficulty_screen")
 
+#definieren von game over bilschirm
 def game_over_screen():
+    #s.o.
     clean(bgcolor)
+    #schreiben von text auf seite
     setPenColor("red")
     setPos(0, 200)
     setFontSize(80)
@@ -696,44 +705,53 @@ def game_over_screen():
     setPos(0, -100)
     setFontSize(50)
     setPenColor("black")
+    #schreibt den vorig erreichten score auf dies seite (score wird in "a" gemessen)
     label("Your score: {}".format(a), adjust = "c")
+    #erstellen von nochmal und beenden knopf objekten
     again_button = AgainButton(0, -150, 150, 100, "gray", "Again", 20)
     quit_button = QuitButton(0, -300, 150, 100, "red", "Quit", 20)
     
 
+#definieren von funktion zum auslesen von highscore
 def read_score(save_slot):
     global hi_score
+    #öffnen (im lesemodus) und auslesen von score aus datei mit namen vom aktuell ausgewählten slot 
     f = open("saves/save{}.txt".format(save_slot), "r")
+    #setzen von hi_score auf die erste zeile in der datei (der high score)
     hi_score = int(f.readline())
+    #schließen von datei
     f.close()
 
+#gleich, wie oben, jedoch returnt funktion den gespeicherten wert
 def read_score_return(save_slot):
     f = open("saves/save{}.txt".format(save_slot), "r")
     hi_score = int(f.readline())
     f.close()
     return hi_score
 
+#definieren von funktion zum speichern von highscores
 def save_score(score, save_slot):
     global hi_score
+    #öffnen (im schreibmodus) und schreiben von score in die datei mit namen vom aktuell ausgewählten slot, falls der aktuelle score höher ist als high score
     f = open("saves/save{}.txt".format(save_slot), "w")
     if score > hi_score:
         f.write(str(score))
-
     elif score < hi_score:
         f.write(str(hi_score))
-
+    #schließen der datei
     f.close()
 
 
-
+#definieren von funktion zum ändern der farben der blöcke 
 def change_color_orientation(color):
     pos = getPos()
+    #macht dies bei jedem block in der blöckeliste
     for block in block_loc:
         setPos(block)
         setFillColor(color)
         fill()
 
-        setPos(pos)
+    setPos(pos)
 
 
 # DA CODE STARTS RUNNING HERE
