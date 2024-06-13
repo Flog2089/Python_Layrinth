@@ -13,7 +13,11 @@ Ausserdem gibt es die Roten Todesblöcke, wenn man die berührt ist man Tot.
 
 Ausserdem funktioniert das Spiel nur bei 1080p(Full Hd) oder hochauflösenderen Monitoren
 
-
+Dinge die nicht umgesetzt wurden:
+-Verschiedene Gegner (wir fanden einer wäre genug)
+-Zufällige Map (wäre zu kompliziert geworden)
+(-Rechts und Links Click machen verschiedene Sachen (haben jetzt A und D))#
+-Level (weil das nicht mit unserem endlos system gehen würde)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
