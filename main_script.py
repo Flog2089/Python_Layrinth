@@ -1,4 +1,3 @@
-#import von wichtigen libraries
 from gturtle import *
 from time import sleep
 from sys import exit
@@ -207,7 +206,7 @@ class BackButton(Button):
         self.var = var
         super(BackButton, self).__init__(posX, posY, width, height, color, text, radius)
 
-	#abhängig davon welche variable bei erstellen vom Button angegeben wird, werden versch. variablen auf falsch gesetzt, um menüpunkte hoch zu gehen
+    #abhängig davon welche variable bei erstellen vom Button angegeben wird, werden versch. variablen auf falsch gesetzt, um menüpunkte hoch zu gehen
     def click_action(self):
         global difficulty_selected
         global slot_selected
@@ -367,7 +366,7 @@ def doStep():
     # setzen wir sie wieder zurück und drehen sie dafür.
     if getPixelColorAheadStr(CELLSIZE) == "black":
         right(90)
-	#hier wird die richtung festgelegt in die die Turtle guckt
+    #hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction += 1
         if player_Sprite_direction > 4 :
             player_Sprite_direction = 1
@@ -375,7 +374,7 @@ def doStep():
     # dreht sie sich nach links.
     elif getPixelColorAheadStr(CELLSIZE) == "green":
         lt(90)
-	#hier wird die richtung festgelegt in die die Turtle guckt
+    #hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction -= 1
         if player_Sprite_direction < 1 :
             player_Sprite_direction = 4
@@ -383,7 +382,7 @@ def doStep():
     # dreht sie sich um.
     elif getPixelColorAheadStr(CELLSIZE) == "blue":
         right(180)
-	#hier wird die richtung festgelegt in die die Turtle guckt
+    #hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction += 2
         if player_Sprite_direction > 4 :
             player_Sprite_direction -= 4
@@ -399,104 +398,103 @@ def doStep():
 
     if game_loop:
 
-	#Guckt in welche richtung der Spieler schaut
+    #Guckt in welche richtung der Spieler schaut
         if player_Sprite_direction == 1 :
 
-    		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
+            #Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
             if player_Sprite == 1 :
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_2.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_3.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
 
-	#Guckt in welche richtung der Spieler schaut
+    #Guckt in welche richtung der Spieler schaut
         elif player_Sprite_direction == 2 :
-
-    		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
-	    if player_Sprite == 1 :
-		#Zeichnet Bild
+            #Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
+            if player_Sprite == 1 :
+                #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+                #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
-		#Zeichnet Bild
+                #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_2.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+                #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
-		#Zeichnet Bild
+                #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+                #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
-		#Zeichnet Bild
+                #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_3.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+                #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
 
-	#Guckt in welche richtung der Spieler schaut
+    #Guckt in welche richtung der Spieler schaut
         elif player_Sprite_direction == 3 :
 
-		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
+        #Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
             if player_Sprite == 1 :
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_2.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_3.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
 
-	#Guckt in welche richtung der Spieler schaut
+    #Guckt in welche richtung der Spieler schaut
         elif player_Sprite_direction == 4 :
 
-		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
+        #Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
             if player_Sprite == 1 :
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_2.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_1.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
-		#Zeichnet Bild
+        #Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_3.png".format(wd))
-		#setzt fest welches bild als nächstes dran ist
+        #setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
     
 
@@ -597,7 +595,7 @@ def action_cell(pos):
     #boost: schiesst dich 2 felder nach vorne
     if r == 1 :
         doStep()
-	#drawimage damit die sprite gelöscht wird auf dem Spielfeld
+    #drawimage damit die sprite gelöscht wird auf dem Spielfeld
         drawImage("{}/sprites/white.png".format(wd))
         doStep()
     #verlangsamt den spieler
@@ -971,8 +969,8 @@ while True:
                         if a % 2 == 0:
                             pprob.clear_shadow()
                             pprob.advance()
-			            if a / 10 == 0 :
-			                draw_death_block()
+                        if a % 10 == 0 :
+                            draw_death_block()
                         #gegner überprüft, ob spieler gefangen wurde
                         pprob.check_catch()
                         #wenn game_loop auf falsch gesetzt wird, wird die loop unverzüglich verlassen
