@@ -512,7 +512,7 @@ def action_cell(pos):
     global a
     global sleep_multiplier
     global b
-    r = randint(1, 1)
+    r = randint(1, 3)
     drawImage("{}/sprites/white.png".format(wd))
     if r == 1 :
         doStep()
