@@ -77,7 +77,6 @@ class SlotButton(Button):
         lt(90)
         pd()
         fd(self.width / 2 - self.radius + self.border / 2)
-        
         #komplexe schleifen für abgerundeten rand (ChatGPT als hilfe für berechnungen)
         for _ in range(23):
             fd((self.radius * 3.14159 / 180) * 3.91)
@@ -158,7 +157,7 @@ class ApplySlotButton(Button):
         global slot_selected
         slot_selected = True
 
-#definieren class für die auswahl von schwierigkeit mit class SlotButton als parent
+#definieren class DifficultyButton() mit class Button als parent
 class DifficultyButton(SlotButton):
     difficulty_buttons = []
     #s.o.
@@ -354,6 +353,7 @@ pprob = Enemy("enemy_sprite", 80, 80)
 
 
 def doStep():
+    #Variablen werden importiert
     global player_Sprite_direction
     global player_Sprite
     global trailing_color
@@ -365,89 +365,136 @@ def doStep():
     # setzen wir sie wieder zurück und drehen sie dafür.
     if getPixelColorAheadStr(CELLSIZE) == "black":
         right(90)
+	#hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction += 1
         if player_Sprite_direction > 4 :
             player_Sprite_direction = 1
+    # Falls die Turtle auf einem Grünen landet,
+    # dreht sie sich nach links.
     elif getPixelColorAheadStr(CELLSIZE) == "green":
         lt(90)
+	#hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction -= 1
         if player_Sprite_direction < 1 :
             player_Sprite_direction = 4
-
+    # Falls die Turtle auf einem Blauen Feld landet,
+    # dreht sie sich um.
     elif getPixelColorAheadStr(CELLSIZE) == "blue":
         right(180)
+	#hier wird die richtung festgelegt in die die Turtle guckt
         player_Sprite_direction += 2
         if player_Sprite_direction > 4 :
             player_Sprite_direction -= 4
+    # Turtle geht die eingestellte cellsize nach vorne
     elif game_loop:
         fd(CELLSIZE)
-    
+    # Falls man auf einem death block steht wird game_loop auf False gesetzt
     if pos in death_blocks:
         game_loop = False
-    
+    # Falls man auf einem Aktionsblock steht wird action_cell ausgeführt
     if pos in action_cells:
         action_cell(pos)
 
     if game_loop:
-        
+
+	#Guckt in welche richtung der Spieler schaut
         if player_Sprite_direction == 1 :
-    
+
+    		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
             if player_Sprite == 1 :
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_2.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_r_3.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
-    
+
+	#Guckt in welche richtung der Spieler schaut
         elif player_Sprite_direction == 2 :
-    
-            if player_Sprite == 1 :
+
+    		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
+	    if player_Sprite == 1 :
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_2.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_d_3.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
-    
+
+	#Guckt in welche richtung der Spieler schaut
         elif player_Sprite_direction == 3 :
-    
+
+		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
             if player_Sprite == 1 :
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_2.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_l_3.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
-    
+
+	#Guckt in welche richtung der Spieler schaut
         elif player_Sprite_direction == 4 :
-    
+
+		#Entscheidet welches Bild angezeigt werden muss für eine flüssige Animation
             if player_Sprite == 1 :
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 2
             elif player_Sprite == 2:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_2.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 3
             elif player_Sprite == 3:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_1.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 4
             elif player_Sprite == 4:
+		#Zeichnet Bild
                 drawImage("{}/sprites/Sprite_u_3.png".format(wd))
+		#setzt fest welches bild als nächstes dran ist
                 player_Sprite = 1
     
 
@@ -460,31 +507,35 @@ def drawGrid():
     pd()
     setPenColor("gray")
     x = -PLAYGROUND_WIDTH / 2
+    #berechnet wie viele Geraden man braucht und zeichnet diese auf der x achse
     for i in range(PLAYGROUND_WIDTH // CELLSIZE + 1):
         setPos(x + i * CELLSIZE, -PLAYGROUND_HEIGHT / 2)
         moveTo(x + i * CELLSIZE, +PLAYGROUND_HEIGHT / 2)
     y = -PLAYGROUND_HEIGHT / 2
+    #berechnet wie viele Geraden man braucht und zeichnet diese auf der y achse
     for i in range(PLAYGROUND_HEIGHT // CELLSIZE + 1):
         setPos(-PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
         moveTo(+PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
 
     setPos(0, 0)
-    
+    #zeichnet spezial-Blöcke auf dem spielfeld
     for i in range (3 * difficulty) :
         draw_action_cell()
         draw_death_block()
     
     showTurtle()
-
+#zeichnet die blaue Grenze des Spielbereichs
 def draw_border():
     hideTurtle()
     lt(90)
     pu()
     setFillColor("blue")
+    #Turtle wird so gesetzt, dass die felder gut ausgefüllt werden können
     setPos(CELLSIZE / 2, CELLSIZE / 2)
-    fd(PLAYGROUND_HEIGHT / 2 - 1 * CELLSIZE)
+    fd(PLAYGROUND_HEIGHT / 2 - 1**1 * CELLSIZE)
     rt(90)
     fd(PLAYGROUND_WIDTH / 2 - 1 * CELLSIZE)
+    #füllt die kästchen aus
     for i in range(2):
         rt(90)
         for j in range(24):
@@ -520,7 +571,7 @@ def onClick(x, y):
             else:
                 setFillColor("green")
             fill()
-            
+
             #die koordinate vom block wird der blöcke liste hinzugefügt
             block_loc.append([xxx, yyy])
 
@@ -530,7 +581,7 @@ def onClick(x, y):
             fill()
             block_loc.remove([xxx, yyy])
 
-        
+
         #turtle wird zurückgesetzt
         setPos(turtle_x, turtle_y)
 #definition Aktions/Fragezeichenfelder
@@ -538,15 +589,20 @@ def action_cell(pos):
     global a
     global sleep_multiplier
     global b
+    #eine zufallszahl wird gewählt, die bestimmt was passieren soll
     r = randint(1, 3)
     drawImage("{}/sprites/white.png".format(wd))
+    #boost: schiesst dich 2 felder nach vorne
     if r == 1 :
         doStep()
+	#drawimage damit die sprite gelöscht wird auf dem Spielfeld
         drawImage("{}/sprites/white.png".format(wd))
         doStep()
+    #verlangsamt den spieler
     elif r == 2:
         sleep_multiplier = 0.3
         b = a
+    #teleportiert dich zufällig
     elif r == 3:
         setPos((randint(-9, 9))*40, (randint(-9, 9))*40)
     remove_action_cell(pos)
@@ -616,7 +672,7 @@ def save_slot_selection():
     setPenColor("black")
     setFontSize(60)
     label("Select your save slot:", adjust = "c")
-    
+
     #erstellen von 5 button objekten von oben definierten Button classes mit jeweiligen oben angegebenen properties
     #3 reaktive knöpfe zum auswählen von schwierigkeitsgrad
     slot1_button = SaveSlotButton(0, 250, 250, 150, "#00AAAA", "Slot 1", 1, 10, "#008A8A", 20)
@@ -637,14 +693,14 @@ def credits_screen():
     #erstellen von allen texten auf dem credits screen
     setPos(0, 380)
     setFontSize(60)
-    label("Credits:", adjust = "c")    
+    label("Credits:", adjust = "c")
     setFontSize(25)
     setPos(0, 270)
     label("Flog - alle Sprites von Hand erstellt, Spieler Frame für Frame animiert, ", adjust = "c")
     setPos(0, 240)
     label("Action Cells für mehr Dynamik eingebaut.", adjust = "c")
     setPos(0, 190)
-    label("Doman - Menüsystem von null auf genestet, sich mit dem blauen Rand abgemüht,", adjust = "c")
+    label("Doman - Menüsystem von null auf genestet, sich mit dem blauen Rand abge müht,", adjust = "c")
     setPos(0, 160)
     label("den Gegner (pprob) ins Leben gerufen, Blöcke Farben wechseln lassen", adjust = "c")
     setPos(0, 110)
@@ -689,7 +745,7 @@ def difficulty_selection():
     #setzt turtle zurück nach hause und nach oben guckend
     setHeading(0)
     home()
-    
+
     #erstellen von text auf seite
     setPos(0, 100)
     setPenColor("black")
@@ -724,7 +780,7 @@ def game_over_screen():
 #definieren von funktion zum auslesen von highscore
 def read_score(save_slot):
     global hi_score
-    #öffnen (im lesemodus) und auslesen von score aus datei mit namen vom aktuell ausgewählten slot 
+    #öffnen (im lesemodus) und auslesen von score aus datei mit namen vom aktuell ausgewählten slot
     f = open("saves/save{}.txt".format(save_slot), "r")
     #setzen von hi_score auf die erste zeile in der datei (der high score)
     hi_score = int(f.readline())
@@ -751,7 +807,7 @@ def save_score(score, save_slot):
     f.close()
 
 
-#definieren von funktion zum ändern der farben der blöcke 
+#definieren von funktion zum ändern der farben der blöcke
 def change_color_orientation(color):
     pos = getPos()
     #macht dies bei jedem block in der blöckeliste
@@ -779,7 +835,7 @@ while True:
         #zufallszahl zwischen 0 und 3
         arand = randint(0, 3)
         #zufallsfarbe aus der liste
-        setColor(choice(["red", "blue", "yellow", "green"])) 
+        setColor(choice(["red", "blue", "yellow", "green"]))
         #abhängig davon was arand ist, kommt turtle aus versch richtungen & positionen
         if arand == 0:
             #feste x postion außerhalb des bildschirms, jedoch zufällige y koordinate
@@ -807,7 +863,7 @@ while True:
 #            fd(8)
 #            if i == 200:
 #                break
-#        
+#
     #sobald das spiel anfängt zu laufen (game_running = true)
     while game_running:
         #s.o.
@@ -816,10 +872,10 @@ while True:
         #alle bisherigen buttons in der button.buttons liste werden zerstört (siehe andere datei)
         for button in Button.buttons:
             button.destroy()
-        
+
         #credits screen wird geladen
         credits_screen()
-        
+
         #solange die credits noch nicht selected sind läuft folgendes ab
         while not credits_selected:
             #wenn das spiel nicht läuft werden alle buttons zerstört, und die schleife wird verlassen (damit credits_screen() nicht dauerhaft ausgeführt wird)
@@ -827,7 +883,7 @@ while True:
                 for button in Button.buttons:
                     button.destroy()
                 break
-        
+
         #fährt fort sobald credits_selected = true
         while credits_selected:
             #s.o.
@@ -843,7 +899,7 @@ while True:
                     for button in Button.buttons:
                         button.destroy()
                     break
-            
+
             #fährt fort sobald slot_selected = true
             while slot_selected:
                 #s.o.
@@ -851,7 +907,7 @@ while True:
                     button.destroy()
                 if combo_breaker:
                     break
-                
+
                 #zeichnet die difficulty selection
                 difficulty_selection()
                 
@@ -865,7 +921,7 @@ while True:
                                     
                     if getKey() == "u":
                         difficulty_selection()
-                    
+
                     #wenn slots nicht selected sind, werden alle buttons gelöscht und die schleife wird verlassen
                     if not slot_selected:
                         for button in Button.buttons:
@@ -888,7 +944,7 @@ while True:
                     a = 1
                     #liest den score aus datei
                     read_score(save_slot)
-            
+
                     clear()
                     showTurtle()
                     #zeichnet das spielfeld
@@ -909,11 +965,13 @@ while True:
                         a += 1
                         #turtle wird zur sicherheit immer wieder versteckt
                         ht()
-                        
+
                         #gegner geht nach vorne, wenn a gerade ist (also bei jedem zweiten spieler-schritt
                         if a % 2 == 0:
                             pprob.clear_shadow()
                             pprob.advance()
+			            if a / 10 == 0 :
+			                draw_death_block()
                         #gegner überprüft, ob spieler gefangen wurde
                         pprob.check_catch()
                         #wenn game_loop auf falsch gesetzt wird, wird die loop unverzüglich verlassen
@@ -937,7 +995,7 @@ while True:
                         elif key == "d":
                             dir_right = True
                             change_color_orientation("black")
-                    
+
                         
                         #falls fünf schritte seit b vergangen sind, wird der sleep_multiplier effekt von den action_cells resettet
                         if a - 5 == b:
@@ -949,7 +1007,7 @@ while True:
                     #speichern und auslesen von score (a)
                     save_score(a, save_slot)
                     read_score(save_slot)
-                    #alle variablen zurücksetzten 
+                    #alle variablen zurücksetzten
                     difficulty_selected = False
                     action_cells = []
                     block_loc = []
@@ -976,4 +1034,4 @@ label("You may now close the turtle window", adjust = "c")
         
     
     
-    
+
