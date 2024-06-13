@@ -77,6 +77,7 @@ class SlotButton(Button):
         lt(90)
         pd()
         fd(self.width / 2 - self.radius + self.border / 2)
+        
         #komplexe schleifen für abgerundeten rand (ChatGPT als hilfe für berechnungen)
         for _ in range(23):
             fd((self.radius * 3.14159 / 180) * 3.91)
@@ -157,7 +158,7 @@ class ApplySlotButton(Button):
         global slot_selected
         slot_selected = True
 
-#definieren class DifficultyButton() mit class Button als parent
+#definieren class für die auswahl von schwierigkeit mit class SlotButton als parent
 class DifficultyButton(SlotButton):
     difficulty_buttons = []
     #s.o.
@@ -187,6 +188,7 @@ class DifficultyButton(SlotButton):
         super(DifficultyButton, self).draw_removable_border()
         DifficultyButton.unclick()
 
+#definieren class für den save slot bestätigungs button mit class Button als parent
 class ApplyDifficultyButton(Button):
     #s.o.
     def __init__(self, posX, posY, width, height, color, text, radius):
@@ -197,13 +199,14 @@ class ApplyDifficultyButton(Button):
         global difficulty_selected
         difficulty_selected = True
 
+#definieren class für den zurück button auf dem game over screen mit class Button als parent
 class BackButton(Button):
     #s.o.
     def __init__(self, posX, posY, width, height, color, text, radius, var):
         self.var = var
         super(BackButton, self).__init__(posX, posY, width, height, color, text, radius)
 
-		 #abhängig davon welche variable bei erstellen vom Button angegeben wird, werden versch. variablen auf falsch gesetzt, um menüpunkte hoch zu gehen
+	#abhängig davon welche variable bei erstellen vom Button angegeben wird, werden versch. variablen auf falsch gesetzt, um menüpunkte hoch zu gehen
     def click_action(self):
         global difficulty_selected
         global slot_selected
@@ -217,40 +220,37 @@ class BackButton(Button):
         elif self.var == "credits_screen":
             game_running = False
 
-#definieren class für den Start-Knopf auf dem startbildschirm            
+#definieren class für den Start-Knopf auf dem startbildschirm  mit class Button als parent  
 class PlayButton(Button):
     #s.o.
     def __init__(self, posX, posY, width, height, color, text, radius):
         super(PlayButton, self).__init__(posX, posY, width, height, color, text, radius)
         self.make_arrow()
 
-		 #fährt fort zum nächsten menüpunkt
+    #fährt fort zum nächsten menüpunkt (startet das spiel (slot auswahl))
     def click_action(self):
         global game_running
         global credits_selected
         credits_selected = True
         game_running = True
 
-    #erstellt den grünen Pfeil auf dem startknopf
+    #erstellt grünen Pfeil auf startknopf
     def make_arrow(self):
-        
         setPos(self.posX - 7, self.posY - self.height / 2)
         drawImage("{}/sprites/start_arrow.png".format(wd))
 
-#
+#definieren class für den credits button mit class Button als parent
 class CreditsButton(Button):
-    #initialisierung eigener variablen und übernahme von funktionen und variablen von parent
+    #s.o
     def __init__(self, posX, posY, width, height, color, text, radius):
         super(CreditsButton, self).__init__(posX, posY, width, height, color, text, radius)
 
-
+    #"startet das spiel" (geht auf den credits screen)
     def click_action(self):
         global game_running
         game_running = True
 
-
-
-
+#definieren class für den neustart button mit class Button als parent
 class AgainButton(Button):
     #s.o.
     def __init__(self, posX, posY, width, height, color, text, radius):
@@ -272,22 +272,22 @@ class AgainButton(Button):
         game_loop = False
         game_running = False
         combo_breaker = False
-        
+
+#definieren class für den beenden button mit class Button als parent
 class QuitButton(Button):
     #s.o.
     def __init__(self, posX, posY, width, height, color, text, radius):
         super(QuitButton, self).__init__(posX, posY, width, height, color, text, radius)
 
-    #beendet spiel
+    #beendet spiel endgültig
     def click_action(self):
         global combo_breaker
         combo_breaker = True
 
+#definieren für class vom enemy
 class Enemy:
-    def __init__(self, color, difficulty, name, sprite, posX, posY):
-        self.color = color
-        self.difficutly = difficulty
-        self.name = name
+    #initialisierung von eigenen variablen für den gegner
+    def __init__(self, sprite, posX, posY):
         self.sprite = sprite
         self.posX = posX
         self.posY = posY
@@ -296,45 +296,59 @@ class Enemy:
         enemies.append(self)
         self.pos_temp = self.pos
 
+    #definieren was passiert, wenn gegner spieler fängt
     def catch_action(self):
         global game_loop
         game_loop = False
 
+    #überprüft, ob gegner spieler gefangen hat
     def check_catch(self):
         if self.pos == getPos():
+            #falls gegner spieler fängt, wird die obige catch action ausgeführt
             self.catch_action()
 
+    #funktion zum bewegen vom Gegner
     def advance(self):
+        #ruft turtle position ab, um sie später an gleiche position zurückzusetzen
         turtle_pos = getPos()
+        a = heading()
         self.pos_temp = self.pos
+        #berechnet differenz zur turtle
         self.diff = [self.pos[0] - turtle_pos[0], self.pos[1] - turtle_pos[1]]
 
+        #berechnet, ob gegner nach oben, unten, links, rechts geht (hab ich geschrieben, ohne chatgpt, verstehe den code jedoch nicht mehr, also bei fragen bitte den code kopieren und chatgpt zum erklären geben)
         if abs(self.diff[1]) <= abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[0] = self.pos[0] - CELLSIZE if (self.diff[0] >= 0) else self.pos[0] + CELLSIZE
         elif abs(self.diff[1]) > abs(self.diff[0]) and self.diff != [0, 0]:
             self.pos[1] = self.pos[1] - CELLSIZE if (self.diff[1] >= 0) else self.pos[1] + CELLSIZE
 
-
+        #setzt turtle auf eigene position und zeichnet eigene sprite
         setPos(self.pos)
-        a = heading()
         setHeading(0)
         setFillColor("white")
         fill()
         drawImage("{}/sprites/{}.png".format(wd, self.sprite))
+        
+        #wenn enemy über einen von den unten genannten blöcken läuft, wird dieser (nicht visuell) im code aus der liste gelöscht
         if self.pos in action_cells:
             remove_action_cell(self.pos)
         if self.pos in block_loc:
             block_loc.remove(self.pos)
+            
+        #setzt turtle zurück auf position des spielers
         setHeading(a)
         setPos(turtle_pos)
 
+    #übermalt das im vorigen schritt gezeichnete bild von gegner, um keine gegner spur zu hinterlassen (altes bild befindet sich an position self.pos_temp)
     def clear_shadow(self):
         turtle_pos = getPos()
         setPos(self.pos_temp)
+        #wird übermalt
         drawImage("{}/sprites/white.png".format(wd))
         setPos(turtle_pos)
 
-pprob = Enemy(1, 1, 1, "enemy_sprite", 80, 80)
+#erstellt gegner objekt mit enemy_sprite als sprite auf postition [80, 80]
+pprob = Enemy("enemy_sprite", 80, 80)
 
 
 
