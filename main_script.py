@@ -494,16 +494,18 @@ def drawGrid():
     pd()
     setPenColor("gray")
     x = -PLAYGROUND_WIDTH / 2
+    #berechnet wie viele Geraden man braucht und zeichnet diese auf der x achse
     for i in range(PLAYGROUND_WIDTH // CELLSIZE + 1):
         setPos(x + i * CELLSIZE, -PLAYGROUND_HEIGHT / 2)
         moveTo(x + i * CELLSIZE, +PLAYGROUND_HEIGHT / 2)
     y = -PLAYGROUND_HEIGHT / 2
+    #berechnet wie viele Geraden man braucht und zeichnet diese auf der y achse
     for i in range(PLAYGROUND_HEIGHT // CELLSIZE + 1):
         setPos(-PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
         moveTo(+PLAYGROUND_WIDTH / 2, y + i * CELLSIZE)
 
     setPos(0, 0)
-    
+    #zeichnet spezial-Blöcke auf dem spielfeld
     for i in range (3 * difficulty) :
         draw_action_cell()
         draw_death_block()
