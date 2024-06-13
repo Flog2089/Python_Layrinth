@@ -17,6 +17,7 @@ save_slot = 1
 sleep_multiplier = 1
 difficulty = 0
 
+game_running = False
 slot_selected = False
 difficulty_selected = False
 credits_selected = False
@@ -30,6 +31,8 @@ action_cells = []
 enemies = []
 death_blocks = []
 
+
+#setzt die größe des turtle fensters auf die oben definierten variablen
 PLAYGROUND_HEIGHT = 1000
 PLAYGROUND_WIDTH = 1000
 CELLSIZE = 40
@@ -39,8 +42,6 @@ bgcolor = "#88AABF"
 setPlaygroundSize(PLAYGROUND_WIDTH,PLAYGROUND_HEIGHT)
 makeTurtle("u:/Eigene Dateien/Downloads/Duo.jpg")
 
-
-#setzt die größe des turtle fensters auf die oben definierten variablen
 
 
 
@@ -113,6 +114,7 @@ class SaveSlotButton(SlotButton):
         self.saved_text = "High Score: " + str(self.saved_score)
         #übernahme von funktionen und variablen von parent
         super(SaveSlotButton, self).__init__(posX, posY, width, height, color, text, border, border_color, radius)
+        #führt funktion make on top aus (s.u.)
         self.make_on_top()
 
 
@@ -820,7 +822,6 @@ def change_color_orientation(color):
 
 
 # DA CODE STARTS RUNNING HERE
-game_running = False
 
 #das menü
 #läuft in dauerschleife
